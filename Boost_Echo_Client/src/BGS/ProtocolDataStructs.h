@@ -29,6 +29,7 @@ class bguHeader : public ISerializable
 {
 protected :
 	uint16_t opcode;
+
 public:
 	virtual ~bguHeader() { };
 
@@ -65,6 +66,7 @@ public:
 
 	}
 
+    virtual inline uint16_t getMyOPCode() = 0;
 };
 
 

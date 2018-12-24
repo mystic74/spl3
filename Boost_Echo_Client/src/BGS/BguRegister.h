@@ -1,12 +1,12 @@
 /* BguLogin.h */
-#ifndef BGU_LOGIN_H
-#define BGU_LOGIN_H
+#ifndef BGU_REGISTER_H
+#define BGU_REGISTER_H
 #include "ProtocolDataStructs.h"
 #include <string>
 
 #define SIZE_FOR_RESERVED 1
 #define NULL_TERMINATOR '\0'
-class bguLogin : bguHeader
+class bguRegister : bguHeader
 {
 
 private:
@@ -100,11 +100,12 @@ public :
 
 
 			return true;
+
 		}
 
         virtual inline uint16_t getMyOPCode()
         {
-            return static_cast<uint16_t>(OPCODE::LOGIN);
+            return OPCODE::REGISTER;
         }
 };
 

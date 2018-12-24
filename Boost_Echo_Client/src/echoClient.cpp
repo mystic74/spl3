@@ -12,7 +12,7 @@ int main (int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
-    bguHeader tempHeader;
+    //bguHeader tempHeader;
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
