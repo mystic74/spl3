@@ -2,6 +2,9 @@
 #include <connectionHandler.h>
 #include "BGS/ProtocolDataStructs.h"
 #include "BGS/BguLogin.h"
+#include "BGS/BguFollow.h"
+#include "BGS/BguPost.h"
+
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
@@ -12,7 +15,8 @@ int main (int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
-    //bguHeader tempHeader;
+    bguFollow tempHeader;
+    bguPost  tempHeader2;
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;

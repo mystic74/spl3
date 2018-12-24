@@ -22,7 +22,7 @@ typedef struct
 {
 	public:
 		uint16_t opcode;
-} dumbHeader;
+} bguProtocolStruct;
 
 class bguHeader : public ISerializable
 
@@ -39,10 +39,10 @@ public:
 		if (out_buff == nullptr)
 			return false;
 		
-		dumbHeader* tempRef = (dumbHeader*)out_buff;
+		bguProtocolStruct* tempRef = (bguProtocolStruct*)out_buff;
 
 		// Should switch to this, can't remember the syntax as of this specific moment though
-		//dumbHeader* tempRef = reinterpet_cast<dumbHeader*>(out_buff);
+		//bguProtocolStruct* tempRef = reinterpet_cast<bguProtocolStruct*>(out_buff);
 
 		// Move to network format, short is important here.
 		this->opcode = htons(this->opcode);
@@ -58,7 +58,7 @@ public:
 		if (in_buff == nullptr)
 			return false;
 
-		dumbHeader* tempRef = (dumbHeader*)in_buff;
+		bguProtocolStruct* tempRef = (bguProtocolStruct*)in_buff;
 
 		this->opcode = ntohs(tempRef->opcode);
 
