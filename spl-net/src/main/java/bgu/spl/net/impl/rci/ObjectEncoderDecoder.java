@@ -1,6 +1,9 @@
 package bgu.spl.net.impl.rci;
 
 import bgu.spl.net.api.MessageEncoderDecoder;
+import bgu.spl.net.api.bguMessageFactory;
+import bgu.spl.net.api.bguProtocol;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInput;
@@ -10,10 +13,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
+import javax.xml.soap.MessageFactory;
+
 public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable> {
 
-    private final ByteBuffer lengthBuffer = ByteBuffer.allocate(4);
-    private byte[] objectBytes = null;
+    private final ByteBuffer lengthBuffer = ByteBuffer.allocate(2);
+    private bguProtocol objectBytes = null;
     private int objectBytesIndex = 0;
 
     @Override
@@ -22,17 +27,12 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
             lengthBuffer.put(nextByte);
             if (!lengthBuffer.hasRemaining()) { //we read 4 bytes and therefore can take the length
                 lengthBuffer.flip();
-                objectBytes = new byte[lengthBuffer.getInt()];
+                objectBytes = new bguMessageFactory().getMessage(lengthBuffer.getShort());
                 objectBytesIndex = 0;
                 lengthBuffer.clear();
             }
         } else {
-            objectBytes[objectBytesIndex] = nextByte;
-            if (++objectBytesIndex == objectBytes.length) {
-                Serializable result = deserializeObject();
-                objectBytes = null;
-                return result;
-            }
+           return objectBytes.decode(nextByte);
         }
 
         return null;
@@ -41,16 +41,6 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
     @Override
     public byte[] encode(Serializable message) {
         return serializeObject(message);
-    }
-
-    private Serializable deserializeObject() {
-        try {
-            ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(objectBytes));
-            return (Serializable) in.readObject();
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("cannot desrialize object", ex);
-        }
-
     }
 
     private byte[] serializeObject(Serializable message) {

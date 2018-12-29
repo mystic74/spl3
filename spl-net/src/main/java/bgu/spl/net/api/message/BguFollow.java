@@ -15,14 +15,14 @@ public class BguFollow extends bguProtocol{
 	}
 
 	@Override
-	protected byte[] encode() {
+	public byte[] encode() {
 		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
 		return encdec.encode(super.opcode+this.Follow+this.numOfUsers+this.UsersNameList);
 	}
 
 	@Override
-	protected bguProtocol decode(byte nextByte) {
+	public bguProtocol decode(byte nextByte) {
 		// TODO Auto-generated method stub
 		return null;
 	}

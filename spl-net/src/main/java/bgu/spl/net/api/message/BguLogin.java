@@ -14,14 +14,14 @@ public class BguLogin extends bguProtocol {
 	}
 
 	@Override
-	protected byte[] encode() {
+	public byte[] encode() {
 		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
 		return encdec.encode(super.opcode+this.username+'\0'+this.password+'\0');
 	}
 
 	@Override
-	protected bguProtocol decode(byte nextByte) {
+	public bguProtocol decode(byte nextByte) {
 		// TODO Auto-generated method stub
 		return null;
 	}

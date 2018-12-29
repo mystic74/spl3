@@ -1,16 +1,18 @@
 package bgu.spl.net.api;
 
-public abstract class bguProtocol {
+import java.io.Serializable;
+
+public abstract class bguProtocol  implements Serializable{
 	
-	short opcode;
+	protected short opcode;
 	
 	public bguProtocol(short op)
 	{
 		this.opcode=op;
 	}
 	
-	protected abstract byte[] encode();
-	protected abstract bguProtocol decode(byte nextByte);
+	public abstract byte[] encode();
+	public abstract bguProtocol decode(byte nextByte);
 	
 
 }
