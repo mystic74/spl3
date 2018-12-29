@@ -6,7 +6,7 @@
 
 #define SIZE_FOR_RESERVED 1
 #define NULL_TERMINATOR '\0'
-class bguRegister : bguHeader
+class bguRegister : public bguHeader
 {
 
 private:
@@ -16,6 +16,13 @@ private:
 	uint8_t reserved2;	
 
 public :
+    bguRegister(){};
+    bguRegister(std::string username, std::string password)
+    {
+        this->username = username;
+        this->password = password;
+    }
+
 	virtual inline bool Serialize(int8_t* out_buff)
 		{
 			int unSize 	= strlen(this->username.data());
@@ -27,10 +34,10 @@ public :
 			bguHeader::Serialize(out_buff);
 
 
-			memcpy(&out_buff[sizeof(bguHeader)], this->username.data(), unSize);
-			memset(&out_buff[sizeof(bguHeader) + unSize], NULL_TERMINATOR, SIZE_FOR_RESERVED);
-			memcpy(&out_buff[sizeof(bguHeader) + unSize + SIZE_FOR_RESERVED], this->password.data(), pwdSize);
-			memset(&out_buff[sizeof(bguHeader) + unSize + SIZE_FOR_RESERVED + pwdSize], NULL_TERMINATOR , SIZE_FOR_RESERVED);
+			memcpy(&out_buff[sizeof(bguProtocolStruct)], this->username.data(), unSize);
+			memset(&out_buff[sizeof(bguProtocolStruct) + unSize], NULL_TERMINATOR, SIZE_FOR_RESERVED);
+			memcpy(&out_buff[sizeof(bguProtocolStruct) + unSize + SIZE_FOR_RESERVED], this->password.data(), pwdSize);
+			memset(&out_buff[sizeof(bguProtocolStruct) + unSize + SIZE_FOR_RESERVED + pwdSize], NULL_TERMINATOR , SIZE_FOR_RESERVED);
 
 			return true;
 		}
@@ -49,7 +56,7 @@ public :
 			if (in_buff == nullptr)
 				return false;
 
-			if (size_of_buffer < sizeof(bguHeader))
+			if (size_of_buffer < sizeof(bguProtocolStruct))
 			{
 				// Buffer won't fit the opcode, so not chance that the login message fits here.
 				return false;
@@ -64,8 +71,8 @@ public :
 
 			for ( index = 0; index < size_of_buffer; index++)
 			{	
-				if (in_buff[index + sizeof(bguHeader)] != 0)
-					tempBuffer[index] = in_buff[index + sizeof(bguHeader)];
+				if (in_buff[index + sizeof(bguProtocolStruct)] != 0)
+					tempBuffer[index] = in_buff[index + sizeof(bguProtocolStruct)];
 				else
 					break;
 			}
@@ -105,7 +112,7 @@ public :
 
         virtual inline uint16_t getMyOPCode()
         {
-            return OPCODE::REGISTER;
+            return static_cast<uint16_t>(OPCODE::REGISTER);
         }
 };
 

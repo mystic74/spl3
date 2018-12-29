@@ -4,7 +4,7 @@
 #include "BGS/BguLogin.h"
 #include "BGS/BguFollow.h"
 #include "BGS/BguPost.h"
-
+#include "BGS/BguRegister.h"
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
@@ -15,7 +15,7 @@ int main (int argc, char *argv[]) {
     }
     std::string host = argv[1];
     short port = atoi(argv[2]);
-    bguFollow tempHeader;
+    bguRegister tempHeader("TomRonen", "12345");
     bguPost  tempHeader2;
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
@@ -27,10 +27,12 @@ int main (int argc, char *argv[]) {
     while (1) {
         const short bufsize = 1024;
         char buf[bufsize];
-        std::cin.getline(buf, bufsize);
-		std::string line(buf);
-		int len=line.length();
-        if (!connectionHandler.sendLine(line)) {
+        //std::cin.getline(buf, bufsize);
+		//std::string line(buf);
+		int len=1024;
+
+        tempHeader.Serialize((int8_t*)buf);
+        if (!connectionHandler.sendBytes(buf, bufsize)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }

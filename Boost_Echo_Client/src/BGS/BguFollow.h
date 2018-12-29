@@ -6,7 +6,7 @@
 #include <vector>
 #include <assert.h>
 
-class bguFollow : bguHeader
+class bguFollow :public  bguHeader
 {
     uint8_t     follow;
     uint16_t    num_of_users;
@@ -39,6 +39,7 @@ public:
 
 	virtual inline bool Serialize(int8_t* out_buff)
 		{
+            out_buff = new int8_t[this->userNameList.size() + sizeof(this->num_of_users) + sizeof(this->opcode) + sizeof(this->follow)];
 			if (out_buff == nullptr)
 				return false;
 

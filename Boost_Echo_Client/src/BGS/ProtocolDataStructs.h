@@ -1,6 +1,9 @@
 #ifndef PROTOCOL_DATA_STRUCTS_H
 #define PROTOCOL_DATA_STRUCTS_H
 #include <string.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
 // Change the Lib to -I
 #include "../Lib/ISerializable.h"
 enum class OPCODE : uint16_t
@@ -25,7 +28,6 @@ typedef struct
 } bguProtocolStruct;
 
 class bguHeader : public ISerializable
-
 {
 protected :
 	uint16_t opcode;
@@ -45,7 +47,7 @@ public:
 		//bguProtocolStruct* tempRef = reinterpet_cast<bguProtocolStruct*>(out_buff);
 
 		// Move to network format, short is important here.
-		this->opcode = htons(this->opcode);
+		this->opcode = htons(this->getMyOPCode());
 
 		// Set the opcode in the beggining of the buffer, like god intended
 		tempRef->opcode = this->opcode;
@@ -60,7 +62,8 @@ public:
 
 		bguProtocolStruct* tempRef = (bguProtocolStruct*)in_buff;
 
-		this->opcode = ntohs(tempRef->opcode);
+        this->opcode = ntohs(tempRef->opcode);
+        //this->opcode = tempRef->opcode;
 
 		return true;
 
