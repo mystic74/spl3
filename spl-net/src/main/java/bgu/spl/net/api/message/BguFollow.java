@@ -79,7 +79,10 @@ public class BguFollow extends bguProtocol{
 			}
 			else
 			{
+				
 				for (User toFollow : stringNamesToList()) {
+					
+			
 					if ((this.Follow==0) && ( toFollow.getFollower().contains(follower)==false))
 					{
 						toFollow.addFollower(follower);

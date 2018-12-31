@@ -2,6 +2,8 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 
+import bgu.spl.net.api.DataBase;
+import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguProtocol;
 
 public class BguUserList extends bguProtocol{
@@ -25,7 +27,17 @@ public class BguUserList extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID) {
-		// TODO Auto-generated method stub
+		for (User user : DataBase.getInstance().getUsersForClient(ClientID))
+		{
+			if (!user.isLogIN())
+			{
+				//TODO send ERROR
+			}
+			else
+			{
+				//TODO send ACK
+			}
+		}
 		return this;
 	}
 

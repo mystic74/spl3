@@ -2,6 +2,8 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 
+import bgu.spl.net.api.DataBase;
+import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
@@ -30,7 +32,22 @@ public class BguPM extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID) {
-		// TODO Auto-generated method stub
+		if (DataBase.getInstance().getUser(this.userName)==null)
+		{
+			//TODO send ERROR
+		}
+		for (User user: DataBase.getInstance().getUsersForClient(ClientID))
+		{
+			if (!user.isLogIN())
+			{
+				//TODO send ERROR
+			}
+			else
+			{
+				DataBase.getInstance().addPMmessage(user.getUserName(), this.userName, this.content);
+				//TODO finish
+			}
+		}
 		return this;
 	}
 
