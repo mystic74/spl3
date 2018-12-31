@@ -1,6 +1,8 @@
 package bgu.spl.net.api.message;
 
 
+import java.io.Serializable;
+
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.bguFieldUserName;
 import bgu.spl.net.api.bguProtocol;
@@ -44,10 +46,20 @@ public class BguRegister extends bguProtocol {
 		return this;
 	}
 	
-	//TODO complete
-	public  void register()
-	{
-		DataBase.getInstance().register(this.username.getUsername(), this.password.getUsername());
+
+
+	@Override
+	public Serializable act(int ClientID) {
+		if (DataBase.getInstance().register(this.username.getUsername(), this.password.getUsername(),ClientID)==false)
+		{
+			//TODO send ERROR
+		}
+		else
+		{
+			//TODO send ACK
+		}
+		return this;
+		
 	}
 
 

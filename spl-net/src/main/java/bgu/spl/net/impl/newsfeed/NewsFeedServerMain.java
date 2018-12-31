@@ -19,7 +19,7 @@ public class NewsFeedServerMain {
         Server.reactor(
                 Runtime.getRuntime().availableProcessors(),
                 7777, //port
-                () ->  new RemoteCommandInvocationProtocol<>(feed), //protocol factory
+                () -> new RemoteCommandInvocationProtocol<>(feed), //protocol factory
                 ObjectEncoderDecoder::new //message encoder decoder factory
         ).serve();
 

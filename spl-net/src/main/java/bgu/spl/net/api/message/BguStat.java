@@ -1,5 +1,7 @@
 package bgu.spl.net.api.message;
 
+import java.io.Serializable;
+
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
@@ -24,5 +26,13 @@ public class BguStat extends bguProtocol {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Serializable act(int ClientID) {
+		// TODO Auto-generated method stub
+		return this;
+	}
+
+
 
 }
