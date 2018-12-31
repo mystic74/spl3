@@ -6,6 +6,7 @@ import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguFieldStringList;
+import bgu.spl.net.api.bguFieldUserName;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
@@ -22,22 +23,15 @@ public class BguFollow extends bguProtocol{
 		this.UsersNameList 	= new bguFieldStringList();
 	}
 	
+
+	
+	
 	
 	private ConcurrentLinkedQueue<User> stringNamesToList()
 	{
 		ConcurrentLinkedQueue<User> list =  new ConcurrentLinkedQueue<>();
-		String CurUser = "";
-		for (int i=0;i<this.UsersNameList.length();i++)
-		{
-			if (!(this.UsersNameList.charAt(i)=='\0'))
-			{
-				CurUser=CurUser+ UsersNameList.charAt(i);
-			}
-			else
-			{
-				list.offer(DataBase.getInstance().getUser(CurUser));
-				CurUser="";
-			}
+		for (bguFieldUserName bguFieldusername : this.UsersNameList.get_userNameList()) {
+			list.offer(DataBase.getInstance().getUser(bguFieldusername.getUsername()));
 		}
 		return list;
 	}
