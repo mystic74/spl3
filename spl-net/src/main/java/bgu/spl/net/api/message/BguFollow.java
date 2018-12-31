@@ -2,21 +2,24 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
+import bgu.spl.net.api.bguFieldShort;
+import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 public class BguFollow extends bguProtocol{
 	
-	private short Follow;
-	private short numOfUsers;
-	private String UsersNameList;
+	private byte Follow;
+	private bguFieldShort numOfUsers;
+	private bguFieldStringList UsersNameList;
 
 	public BguFollow(short op) {
 		super(op);
-		// TODO Auto-generated constructor stub
+		this.Follow 		= -1;
+		this.numOfUsers 	= new bguFieldShort();
+		this.UsersNameList 	= new bguFieldStringList();
 	}
 	
 	
@@ -43,13 +46,29 @@ public class BguFollow extends bguProtocol{
 	public byte[] encode() {
 		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.Follow+this.numOfUsers+this.UsersNameList);
+		return encdec.encode(super.opcode + this.Follow + this.numOfUsers.getmShort() + this.UsersNameList.toString());
 	}
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.Follow == -1)
+		{
+			this.Follow = nextByte;
+			return null;
+		}
+		if (!this.numOfUsers.isDone())
+		{
+			this.numOfUsers.decode(nextByte);
+			return null;
+		}
+		
+		if (!this.UsersNameList.isDone())
+		{
+			this.UsersNameList.decode(nextByte, new Integer(this.numOfUsers.getmShort()));
+			return null;
+		}
+		
+		return this;
 	}
 
 	@Override

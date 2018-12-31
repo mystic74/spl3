@@ -17,6 +17,12 @@ int main (int argc, char *argv[]) {
     short port = atoi(argv[2]);
     bguRegister tempHeader("TomRonen", "12345");
     bguPost  tempHeader2;
+    bguFollow tempHeader3;
+
+    tempHeader3.addNameToList("TomRonen");
+    tempHeader3.addNameToList("RachelBrandes");
+    tempHeader3.addNameToList("Nomsi");
+
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
@@ -26,12 +32,15 @@ int main (int argc, char *argv[]) {
 	//From here we will see the rest of the ehco client implementation:
     while (1) {
         const short bufsize = 1024;
+        std::string tempString(1024, '?');
         char buf[bufsize];
+        strcpy(buf,tempString.data()) ;
         //std::cin.getline(buf, bufsize);
 		//std::string line(buf);
 		int len=1024;
 
-        tempHeader.Serialize((int8_t*)buf);
+        //tempHeader.Serialize((int8_t*)buf);
+        tempHeader3.Serialize((int8_t*)buf);
         if (!connectionHandler.sendBytes(buf, bufsize)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;

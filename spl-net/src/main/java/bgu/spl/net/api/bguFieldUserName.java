@@ -1,6 +1,6 @@
 package bgu.spl.net.api;
 
-public class bguFieldUserName {
+public class bguFieldUserName extends bguField {
 	
 	String username = "";
 	public String getUsername() {
@@ -9,12 +9,6 @@ public class bguFieldUserName {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	boolean isDone = false;
-	
-	public boolean isDone() {
-		return isDone;
 	}
 
 	public String decode(byte nextByte )
