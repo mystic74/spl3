@@ -13,9 +13,9 @@ import java.util.Arrays;
  */
 public class bguFieldStringList extends bguField {
 
-	bguFieldUserName[] m_userNameList = null;
+	BguFieldString[] m_userNameList = null;
 	
-	public bguFieldUserName[] get_userNameList() {
+	public BguFieldString[] get_userNameList() {
 		return m_userNameList;
 	}
 
@@ -28,9 +28,9 @@ public class bguFieldStringList extends bguField {
 	public byte[] toByteArray()
 	{
 		ByteArrayOutputStream returnArray = new ByteArrayOutputStream();
-		for (bguFieldUserName bguFieldUserName : m_userNameList) {
+		for (BguFieldString bguFieldUserName : m_userNameList) {
 			try {
-				returnArray.write(bguFieldUserName.getUsername().getBytes());
+				returnArray.write(bguFieldUserName.getMyString().getBytes());
 				returnArray.write('\0');
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -43,8 +43,8 @@ public class bguFieldStringList extends bguField {
 	@Override
 	public String toString() {
 		String strConcatString = "";
-		for (bguFieldUserName bguFieldUserName : m_userNameList) {
-			strConcatString += bguFieldUserName.getUsername();
+		for (BguFieldString bguFieldUserName : m_userNameList) {
+			strConcatString += bguFieldUserName.getMyString();
 			strConcatString += (char)0;
 		}
 		
@@ -55,20 +55,20 @@ public class bguFieldStringList extends bguField {
 
 
 	public bguFieldStringList(Integer amountOfStrings) {
-		m_userNameList = new bguFieldUserName[amountOfStrings];
+		m_userNameList = new BguFieldString[amountOfStrings];
 	}
 	
 	public bguFieldStringList decode(byte nextByte, Integer amountOfStrings) {
 		if (this.m_userNameList == null)
 		{
-			this.m_userNameList = new bguFieldUserName[amountOfStrings];
+			this.m_userNameList = new BguFieldString[amountOfStrings];
 			for (int i = 0; i < amountOfStrings; i++)
 			{
-				this.m_userNameList[i] = new bguFieldUserName();
+				this.m_userNameList[i] = new BguFieldString();
 			}
 		}
 	
-		for (bguFieldUserName bguFieldUserName : m_userNameList) {
+		for (BguFieldString bguFieldUserName : m_userNameList) {
 			if (!bguFieldUserName.isDone())
 			{
 				bguFieldUserName.decode(nextByte);

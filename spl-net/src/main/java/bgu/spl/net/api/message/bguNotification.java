@@ -2,31 +2,55 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 
+import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 public class bguNotification extends bguProtocol{
 
-	private char NotificationType;
-	private String PostingUser;
-	private String Content;
+	private byte NotificationType;
+	private BguFieldString PostingUser;
+	private BguFieldString Content;
 	
 	public bguNotification(short op) {
 		super(op);
-		// TODO Auto-generated constructor stub
+		// Invalid value
+		this.NotificationType 	= -1;
+		this.PostingUser 		= new BguFieldString();
+		this.Content 			= new BguFieldString();
 	}
 
 	@Override
 	public byte[] encode() {
 		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.NotificationType+this.PostingUser+'\0'+this.Content+'\0');
+		return encdec.encode(super.opcode + 
+							 this.NotificationType + 
+							 this.PostingUser.getMyString() +'\0' +
+							 this.Content.getMyString() +'\0');
 	}
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (this.NotificationType == -1)
+		{
+			this.NotificationType = nextByte;
+			return null;
+		}
+		if (!this.PostingUser.isDone())
+		{
+			this.PostingUser.decode(nextByte);
+			return null;
+		}
+		
+		if (!this.Content.isDone())
+		{
+			this.Content.decode(nextByte);
+			return null;
+		}
+		
+		return this;
 	}
 
 	@Override

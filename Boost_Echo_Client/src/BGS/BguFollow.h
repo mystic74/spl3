@@ -73,7 +73,7 @@ public:
             tempPtr->opcode         = htons(this->opcode);
             // Does nothing on a byte though
             tempPtr->follow         = this->m_follow;
-            tempPtr->num_of_users   = htons(this->m_num_of_users);
+           tempPtr->num_of_users   = htons(this->m_num_of_users);
 
 
 			memcpy(&out_buff[sizeof(dummyStruct)], this->m_userNameList.data(), this->m_userNameList.size());

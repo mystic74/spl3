@@ -24,7 +24,8 @@ public class BguLogout extends bguProtocol{
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// TODO Auto-generated method stub
+		// Shouldn't get here should we?
+		
 		return null;
 	}
 
