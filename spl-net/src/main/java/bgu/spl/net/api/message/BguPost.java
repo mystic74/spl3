@@ -45,6 +45,7 @@ public class BguPost extends bguProtocol{
 		{
 			usersToSendTo.addAll(users.getFollower());
 		}
+		
 		String name="";
 		boolean found =  false;
 		int stringIndex = 0;
@@ -55,12 +56,13 @@ public class BguPost extends bguProtocol{
 		{
 			stringIndex = this.content.getMyString().indexOf('@', stringIndex);
 			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
+			
+			// We have a '@' but can't fine a ' ', must be the end of the message.
 			if (endingIndex == -1)
 			{
-				// Ima shelahem zona.
-				// Should not happen i think.
-				return null; // ? I guess? what should i do?
+				endingIndex = this.content.getMyString().length();
 			}
+			
 			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));
 		}
 		
