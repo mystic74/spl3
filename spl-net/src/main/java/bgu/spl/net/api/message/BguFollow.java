@@ -8,6 +8,7 @@ import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.message.bguAckMessages.BguAckFollow;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 public class BguFollow extends bguProtocol{
@@ -75,7 +76,7 @@ public class BguFollow extends bguProtocol{
 
 			if (!follower.isLogIN())
 			{
-				//TODO Send ERROR
+				return new BguError((short)11, this.opcode);
 			}
 			else
 			{
@@ -98,15 +99,12 @@ public class BguFollow extends bguProtocol{
 			}
 			if (succesfullNum==0)
 			{
-				//TODO send ERROR
+				return new BguError((short)11, this.opcode);
 			}
-			else
-			{
-				//TODO send ACK
-			}
-	
+
 		}
-		return this;
+		return new BguAckFollow((short)10, this.numOfUsers, this.UsersNameList);
+
 	}
 
 

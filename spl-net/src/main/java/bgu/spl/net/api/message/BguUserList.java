@@ -2,9 +2,13 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 
+import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
+import bgu.spl.net.api.bguFieldShort;
+import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.message.bguAckMessages.BguAckUserList;
 
 public class BguUserList extends bguProtocol{
 
@@ -31,12 +35,22 @@ public class BguUserList extends bguProtocol{
 		{
 			if (!user.isLogIN())
 			{
-				//TODO send ERROR
+				return new BguError((short)11, this.opcode);
 			}
-			else
+			
+			BguFieldString allUsers = new BguFieldString();
+			String tempUsersString="";
+			for (User users: DataBase.getInstance().getAllUsers())
 			{
-				//TODO send ACK
+				tempUsersString= tempUsersString+users.getUserName()+'\0';
 			}
+			allUsers.setString(tempUsersString);
+			bguFieldShort numOfUsers = new bguFieldShort((short)DataBase.getInstance().getAllUsers().size());
+
+			return new BguAckUserList((short)10,numOfUsers,allUsers);
+			//i need to send Ack for each of the Client Users
+			//but i don't know how to send Ack without return 
+			//TODO change this! send Ack to the current user. delete the return
 		}
 		return this;
 	}

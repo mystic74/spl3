@@ -141,5 +141,10 @@ public class DataBase {
 		return this.ClientIdUsers.get(ClientID);
 	}
 	
+	public ConcurrentLinkedQueue<User> getAllUsers()
+	{
+		return this.UsersList;
+	}
+	
 
 }

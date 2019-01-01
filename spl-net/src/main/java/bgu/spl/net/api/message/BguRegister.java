@@ -50,13 +50,11 @@ public class BguRegister extends bguProtocol {
 	public Serializable act(int ClientID) {
 		if (DataBase.getInstance().register(this.username.getMyString(), this.password.getMyString(),ClientID)==false)
 		{
-			//TODO send ERROR
+			return new BguError((short)11, this.opcode);
 		}
-		else
-		{
-			return new BguACK((short) 10, this.opcode);
-		}
-		return this;
+
+		return new BguACK((short) 10, this.opcode);
+
 		
 	}
 

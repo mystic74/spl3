@@ -3,6 +3,7 @@ package bgu.spl.net.api.message;
 import java.io.Serializable;
 
 import bgu.spl.net.api.BguFieldString;
+import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
@@ -12,12 +13,12 @@ public class bguNotification extends bguProtocol{
 	private BguFieldString PostingUser;
 	private BguFieldString Content;
 	
-	public bguNotification(short op) {
+	public bguNotification(short op, byte type,BguFieldString posting, BguFieldString content) {
 		super(op);
 		// Invalid value
-		this.NotificationType 	= -1;
-		this.PostingUser 		= new BguFieldString();
-		this.Content 			= new BguFieldString();
+		this.NotificationType 	= type;
+		this.PostingUser 		= posting;
+		this.Content 			= content;
 	}
 
 	@Override

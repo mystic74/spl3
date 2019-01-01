@@ -12,6 +12,11 @@ public class bguFieldShort extends bguField{
 		shortRecived.order(ByteOrder.BIG_ENDIAN);
 	}
 	
+	public bguFieldShort(short number)
+	{
+		this.mShort=number;
+	}
+	
 	public short getmShort() {
 		return mShort;
 	}

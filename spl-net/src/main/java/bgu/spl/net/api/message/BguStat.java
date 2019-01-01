@@ -5,7 +5,9 @@ import java.io.Serializable;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
+import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.message.bguAckMessages.BguAckStat;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 public class BguStat extends bguProtocol {
@@ -40,13 +42,23 @@ public class BguStat extends bguProtocol {
 		User user = DataBase.getInstance().getUser(this.userName.getMyString());
 		if (user==null || !(user.isLogIN()))
 		{
-			//TODO send ERROR
+			return new BguError((short)11, this.opcode);
 		}
-		else
+
+		bguFieldShort numOfPost = new bguFieldShort((short)user.getNumOfPosts());
+		bguFieldShort numOffollowers = new bguFieldShort((short)user.getNumOfFollowers());
+		short following=0;
+		for (User users : DataBase.getInstance().getAllUsers())
 		{
-			//TODO send ACK
+			if (users.getFollower().contains(user))
+			{
+				following++;
+			}
 		}
-		return this;
+		bguFieldShort numFollowing = new bguFieldShort(following);
+		
+		return new BguAckStat((short)10, numOfPost, numOffollowers, numFollowing);
+
 	}
 
 

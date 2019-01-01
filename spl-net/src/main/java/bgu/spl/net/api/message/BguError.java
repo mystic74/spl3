@@ -9,8 +9,9 @@ public class BguError extends bguProtocol {
 	
 	private short MessageOpcode;
 	
-	public BguError(short op) {
+	public BguError(short op, short messageOp) {
 		super(op);
+		this.MessageOpcode=messageOp;
 		// TODO Auto-generated constructor stub
 	}
 

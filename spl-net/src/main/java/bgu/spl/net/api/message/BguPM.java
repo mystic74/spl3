@@ -48,19 +48,20 @@ public class BguPM extends bguProtocol{
 	public Serializable act(int ClientID) {
 		if (DataBase.getInstance().getUser(this.userName.getMyString())==null)
 		{
-			//TODO send ERROR
+			return new BguError((short)11, this.opcode);
 		}
 		for (User user: DataBase.getInstance().getUsersForClient(ClientID))
 		{
 			if (!user.isLogIN())
 			{
-				//TODO send ERROR
+				return new BguError((short)11, this.opcode);
 			}
-			else
-			{
-				DataBase.getInstance().addPMmessage(user.getUserName(), this.userName.getMyString() , this.content.getMyString());
-				//TODO finish
-			}
+
+			DataBase.getInstance().addPMmessage(user.getUserName(), this.userName.getMyString() , this.content.getMyString());
+			BguFieldString sender = new BguFieldString();
+			sender.setString(user.getUserName());
+			new bguNotification((short)9, (byte)0, sender, this.content);
+			//TODO finish
 		}
 		return this;
 	}

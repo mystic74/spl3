@@ -48,10 +48,10 @@ public class BguLogin extends bguProtocol {
 		
 		if (user==null||!(user.getPassword().equals(this.password))||(user.isLogIN()))
 		{
-			//TODO send ERROR
+			return new BguError((short)11, this.opcode);
 		}
 		user.login();
-		return this;
+		return new BguACK((short) 10, this.opcode);
 	}
 
 }

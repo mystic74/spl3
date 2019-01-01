@@ -74,5 +74,10 @@ public class User {
 		return this.password;
 	}
 	
+	public int getNumOfFollowers()
+	{
+		return this.followers.size();
+	}
+	
 
 }

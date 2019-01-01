@@ -35,11 +35,11 @@ public class bguMessageFactory {
 		case 8:
 			return new BguStat(Opcode);
 		case 9:
-			return new bguNotification(Opcode);
+			break;
 		case 10:
 			break;
 		case 11:
-			return new BguError(Opcode);
+			break;
 		}
 		
 		return null;
