@@ -23,8 +23,12 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     private final Reactor reactor;
 
     // Inherited function, do we need this?
+    // YES!
     public void send(T msg) {
-        // No idea what to put here
+    	if (msg != null) {
+            writeQueue.add(ByteBuffer.wrap(encdec.encode(msg)));
+            reactor.updateInterestedOps(chan, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
+        }
 
     }
 
@@ -56,11 +60,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
                     while (buf.hasRemaining()) {
                         T nextMessage = encdec.decodeNextByte(buf.get());
                         if (nextMessage != null) {
-                            T response = (T) protocol.process(nextMessage);
-                            if (response != null) {
-                                writeQueue.add(ByteBuffer.wrap(encdec.encode(response)));
-                                reactor.updateInterestedOps(chan, SelectionKey.OP_READ | SelectionKey.OP_WRITE);
-                            }
+                            protocol.process(nextMessage);                 
                         }
                     }
                 } finally {

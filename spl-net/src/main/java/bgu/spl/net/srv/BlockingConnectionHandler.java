@@ -19,8 +19,16 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     private volatile boolean connected = true;
 
     // Inherited function, do we need this?
+    // YES!
     public void send(T msg) {
-        // No idea what to put here
+    	 try (Socket sock = this.sock) { //just for automatic closing
+             out = new BufferedOutputStream(sock.getOutputStream());
+    		 out.write(encdec.encode(msg));
+             out.flush();
+    	 } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 
@@ -36,16 +44,11 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
             int read;
 
             in = new BufferedInputStream(sock.getInputStream());
-            out = new BufferedOutputStream(sock.getOutputStream());
-
+            
             while (!protocol.shouldTerminate() && connected && (read = in.read()) >= 0) {
                 T nextMessage = encdec.decodeNextByte((byte) read);
                 if (nextMessage != null) {
-                    T response = (T) protocol.process(nextMessage);
-                    if (response != null) {
-                        out.write(encdec.encode(response));
-                        out.flush();
-                    }
+                    protocol.process(nextMessage);
                 }
             }
 

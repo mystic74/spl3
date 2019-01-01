@@ -37,7 +37,7 @@ public class bguMessageFactory {
 		case 9:
 			return new bguNotification(Opcode);
 		case 10:
-			return new BguACK(Opcode);
+			break;
 		case 11:
 			return new BguError(Opcode);
 		}

@@ -33,7 +33,6 @@ public :
 			
 			bguHeader::Serialize(out_buff);
 
-
 			memcpy(&out_buff[sizeof(bguProtocolStruct)], this->username.data(), unSize);
 			memset(&out_buff[sizeof(bguProtocolStruct) + unSize], NULL_TERMINATOR, SIZE_FOR_RESERVED);
 			memcpy(&out_buff[sizeof(bguProtocolStruct) + unSize + SIZE_FOR_RESERVED], this->password.data(), pwdSize);

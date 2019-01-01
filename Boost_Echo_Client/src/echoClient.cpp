@@ -40,7 +40,7 @@ int main (int argc, char *argv[]) {
 		int len=1024;
 
         //tempHeader.Serialize((int8_t*)buf);
-        tempHeader3.Serialize((int8_t*)buf);
+        tempHeader.Serialize((int8_t*)buf);
         if (!connectionHandler.sendBytes(buf, bufsize)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;

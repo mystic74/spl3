@@ -1,6 +1,7 @@
 package bgu.spl.net.api;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 
@@ -14,14 +15,14 @@ public class DataBase {
 	private ConcurrentLinkedQueue<User> UsersList;
 	private ConcurrentLinkedQueue<Post> posts;
 	private ConcurrentLinkedQueue<PMmessage> PMmessages;
-	private HashMap<Integer,ConcurrentLinkedQueue<User>> ClientIdUsers;
+	private ConcurrentHashMap<Integer,ConcurrentLinkedQueue<User>> ClientIdUsers;
 	
 	private DataBase()
 	{
 		this.UsersList = new ConcurrentLinkedQueue<>();
 		this.posts = new ConcurrentLinkedQueue<>();
 		this.PMmessages = new ConcurrentLinkedQueue<>();
-		this.ClientIdUsers = new HashMap<>();
+		this.ClientIdUsers = new ConcurrentHashMap<>();
 	}
 	
 	public static DataBase getInstance()
@@ -44,9 +45,18 @@ public class DataBase {
 		
 		User user = new User(userName, Password);
 		this.UsersList.offer(user);
-		ConcurrentLinkedQueue<User> usersForClient =new ConcurrentLinkedQueue<>();
-		usersForClient.offer(user);
-		ClientIdUsers.put(ClientID, usersForClient);
+		
+		if (ClientIdUsers.containsKey(ClientID)==false)
+		{
+			ConcurrentLinkedQueue<User> usersForClient =new ConcurrentLinkedQueue<>();
+			usersForClient.offer(user);	
+			ClientIdUsers.put(ClientID, usersForClient);
+		}
+		else
+		{
+			ClientIdUsers.get(ClientID).offer(user);
+		}
+		
 		return true;
 	}
 	

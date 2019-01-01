@@ -23,10 +23,8 @@ public class BguRegister extends bguProtocol {
 	
 	@Override
 	public byte[] encode() {
-		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
 		return encdec.encode(super.opcode+this.username.getMyString()+'\0'+this.password+'\0');
-
 	}
 
 
@@ -56,7 +54,7 @@ public class BguRegister extends bguProtocol {
 		}
 		else
 		{
-			//TODO send ACK
+			return new BguACK((short) 10, this.opcode);
 		}
 		return this;
 		

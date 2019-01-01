@@ -3,6 +3,9 @@ package bgu.spl.net.srv;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
+import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
+
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -21,8 +24,9 @@ public class Reactor<T> implements Server<T> {
     private final Supplier<MessageEncoderDecoder<T>> readerFactory;
     private final ActorThreadPool pool;
     private Selector selector;
-
+    private int connectionsCounter;
     private Thread selectorThread;
+    private Connections<T> myConnections;
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
 
     public Reactor(
@@ -35,6 +39,8 @@ public class Reactor<T> implements Server<T> {
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.readerFactory = readerFactory;
+        this.connectionsCounter=0;
+        this.myConnections = new ConnectionsImpl<>();
     }
 
     @Override
@@ -94,15 +100,22 @@ public class Reactor<T> implements Server<T> {
     }
 
 
-    private void handleAccept(ServerSocketChannel serverChan, Selector selector) throws IOException {
+    @SuppressWarnings("unchecked")
+	private void handleAccept(ServerSocketChannel serverChan, Selector selector) throws IOException {
         SocketChannel clientChan = serverChan.accept();
         clientChan.configureBlocking(false);
+        BidiMessagingProtocol<T> proryProt =  protocolFactory.get();
         final NonBlockingConnectionHandler<T> handler = new NonBlockingConnectionHandler<>(
                 readerFactory.get(),
-                protocolFactory.get(),
+                proryProt,
                 clientChan,
                 this);
+        ((ConnectionsImpl<T>)myConnections).addConnection(++connectionsCounter, (ConnectionHandler<T>)handler);
+        proryProt.start(connectionsCounter, myConnections);
+        
         clientChan.register(selector, SelectionKey.OP_READ, handler);
+        
+        
     }
 
     private void handleReadWrite(SelectionKey key) {

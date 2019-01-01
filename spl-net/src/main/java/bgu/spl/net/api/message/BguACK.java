@@ -5,21 +5,20 @@ import java.io.Serializable;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguACK extends bguProtocol {
 	
-	private short MassageOpcode;
-	//TODO add Optional
+	private short MessageOpcode;
 	
-	public BguACK(short op) {
+	public BguACK(short op, short msgOpCode) {
 		super(op);
-		// TODO Auto-generated constructor stub
+		this.MessageOpcode = msgOpCode;
 	}
 
 	@Override
 	public byte[] encode() {
-		
 		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.MassageOpcode);
+		return encdec.encode(super.opcode + this.MessageOpcode);
 	}
 
 	@Override

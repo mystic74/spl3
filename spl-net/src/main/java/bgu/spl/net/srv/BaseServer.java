@@ -3,6 +3,8 @@ package bgu.spl.net.srv;
 import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
+import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,7 +17,8 @@ public abstract class BaseServer<T> implements Server<T> {
     private final Supplier<BidiMessagingProtocol<T>> protocolFactory;
     private final Supplier<MessageEncoderDecoder<T>> encdecFactory;
     private ServerSocket sock;
-
+    private Connections<T> ourConnections;
+    private int connectionCounter;
     public BaseServer(
             int port,
             Supplier<BidiMessagingProtocol<T>> protocolFactory,
@@ -25,6 +28,8 @@ public abstract class BaseServer<T> implements Server<T> {
         this.protocolFactory = protocolFactory;
         this.encdecFactory = encdecFactory;
 		this.sock = null;
+		this.ourConnections = new ConnectionsImpl<>();
+		this.connectionCounter = 0;
     }
 
     @Override
@@ -39,11 +44,14 @@ public abstract class BaseServer<T> implements Server<T> {
 
                 Socket clientSock = serverSock.accept();
 
+                BidiMessagingProtocol<T> protyProt = protocolFactory.get();
                 BlockingConnectionHandler<T> handler = new BlockingConnectionHandler<>(
                         clientSock,
                         encdecFactory.get(),
-                        protocolFactory.get());
+                        protyProt);
 
+                ((ConnectionsImpl<T>)ourConnections).addConnection(++connectionCounter, (ConnectionHandler<T>)handler);
+                protyProt.start(connectionCounter, ourConnections);
                 execute(handler);
             }
         } catch (IOException ex) {

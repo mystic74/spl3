@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class RemoteCommandInvocationProtocol<T> implements BidiMessagingProtocol<Serializable> {
 	
 	private int  ClientID;
+	private Connections<Serializable> connectionInstance;
 	
 	public RemoteCommandInvocationProtocol(NewsFeed feed) {
 	}
@@ -24,14 +25,15 @@ public class RemoteCommandInvocationProtocol<T> implements BidiMessagingProtocol
 	@Override
 	public void start(int connectionId, Connections<Serializable> connections) {
 		this.ClientID=connectionId;
+		this.connectionInstance = connections;
 		//TODO finish
 		
 	}
 
 
 	@Override
-	public Serializable process(Serializable message) {
-		return ((bguProtocol) message).act(this.ClientID);
+	public void process(Serializable message) {
+		this.connectionInstance.send(this.ClientID,((bguProtocol) message).act(this.ClientID));
 	}
 
 
