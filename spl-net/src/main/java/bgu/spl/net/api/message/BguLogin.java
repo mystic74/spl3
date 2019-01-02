@@ -7,6 +7,7 @@ import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguLogin extends bguProtocol {
@@ -47,7 +48,7 @@ public class BguLogin extends bguProtocol {
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> mConnectins) {
 		User user = DataBase.getInstance().getUser(this.username.getMyString());
 		
 		if (user==null||!(user.getPassword().equals(this.password.getMyString()))||(user.isLogIN()))

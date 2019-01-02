@@ -8,6 +8,7 @@ import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguPost extends bguProtocol{
@@ -40,14 +41,17 @@ public class BguPost extends bguProtocol{
 		return this;
 	}
 	
-	private ConcurrentLinkedQueue<User> usersToSendTo(int ClientID)
+	private ConcurrentLinkedQueue<String> usersToSendTo(int ClientID)
 	{
-		ConcurrentLinkedQueue<User> usersToSendTo = new ConcurrentLinkedQueue<>();
+		ConcurrentLinkedQueue<String> usersToSendTo = new ConcurrentLinkedQueue<>();
 		
 		//adds all the followers
 		for (User users : DataBase.getInstance().getUsersForClient(ClientID))
 		{
-			usersToSendTo.addAll(users.getFollower());
+			for (User followers: users.getFollower())
+			{
+				usersToSendTo.add(followers.getUserName());
+			}
 		}
 		
 //		String name="";
@@ -67,7 +71,7 @@ public class BguPost extends bguProtocol{
 				endingIndex = this.content.getMyString().length();
 			}
 			
-			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));
+			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)).getUserName());
 		}
 		
 		/*
@@ -99,16 +103,21 @@ public class BguPost extends bguProtocol{
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
-		ConcurrentLinkedQueue<User> usersToSendPostTo = this.usersToSendTo(ClientID);
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> currConnections) {
+		ConcurrentLinkedQueue<String> usersToSendPostTo = this.usersToSendTo(ClientID);
 		for (User user: DataBase.getInstance().getUsersForClient(ClientID))
 		{
 			user.addPost();
 			DataBase.getInstance().addPost(this.content.getMyString(), user.getUserName());
+			BguFieldString userField = new BguFieldString();
+			userField.setString(user.getUserName());
+			bguNotification notification = new bguNotification((short)9, (byte)1,userField , this.content);
+			currConnections.sendTo(usersToSendPostTo.toArray(new String[1]),notification);
+
 
 		}
-		//TODO finish
-		return this;
+		
+		return null;
 	}
 
 

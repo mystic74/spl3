@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguError extends bguProtocol {
@@ -31,7 +32,7 @@ public class BguError extends bguProtocol {
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		// TODO Auto-generated method stub
 		return this;
 	}

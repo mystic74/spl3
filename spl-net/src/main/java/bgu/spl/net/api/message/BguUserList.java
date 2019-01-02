@@ -8,6 +8,7 @@ import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.message.bguAckMessages.BguAckUserList;
 
 @SuppressWarnings("serial")
@@ -32,7 +33,7 @@ public class BguUserList extends bguProtocol{
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		for (User user : DataBase.getInstance().getUsersForClient(ClientID))
 		{
 			if (!user.isLogIN())

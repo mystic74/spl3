@@ -2,6 +2,9 @@ package bgu.spl.net.api;
 
 import java.io.Serializable;
 
+import bgu.spl.net.api.bidi.Connections;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
+
 @SuppressWarnings("serial")
 public abstract class bguProtocol  implements Serializable{
 	
@@ -14,7 +17,7 @@ public abstract class bguProtocol  implements Serializable{
 	
 	public abstract byte[] encode();
 	public abstract bguProtocol decode(byte nextByte);
-	public abstract Serializable act(int ClientID);
+	public abstract Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections);
 	
 
 }

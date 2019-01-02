@@ -9,6 +9,7 @@ import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 import bgu.spl.net.api.message.bguAckMessages.BguAckFollow;
 
 @SuppressWarnings("serial")
@@ -71,7 +72,7 @@ public class BguFollow extends bguProtocol{
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		ConcurrentLinkedQueue<User> usersForClient= DataBase.getInstance().getUsersForClient(ClientID);
 		
 		//for all the users of the client

@@ -1,7 +1,12 @@
 package bgu.spl.net.api.bidi;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
+import bgu.spl.net.api.DataBase;
 import bgu.spl.net.srv.ConnectionHandler;
 
 public class ConnectionsImpl<T> implements Connections<T> {
@@ -24,6 +29,25 @@ public class ConnectionsImpl<T> implements Connections<T> {
 		tempHandler.send(msg);
 		
 		return true;
+	}
+	
+	public void sendTo(String[] usersToSendTo, T msg )
+	{
+		
+		List<String> userToSend = Arrays.asList(usersToSendTo);
+		
+		for (Integer nKey : this.m_ClientList.keySet()) {
+			{
+				for (String string : userToSend) {
+					if (DataBase.getInstance().getUsersAsStringsForClient(nKey).contains(string))
+					{
+						this.send(nKey, msg);
+						userToSend.remove(string);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	@Override

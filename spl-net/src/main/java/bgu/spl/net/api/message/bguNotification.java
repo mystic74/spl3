@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class bguNotification extends bguProtocol{
@@ -58,11 +59,11 @@ public class bguNotification extends bguProtocol{
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		// TODO Auto-generated method stub
 		return this;
 	}
 
-
+                  
 
 }

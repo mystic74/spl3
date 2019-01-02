@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguLogout extends bguProtocol{
@@ -31,7 +32,7 @@ public class BguLogout extends bguProtocol{
 	}
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		ConcurrentLinkedQueue<User> usersForClient = DataBase.getInstance().getUsersForClient(ClientID);
 		for (User user : usersForClient) {
 			if (!user.isLogIN())

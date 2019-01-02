@@ -140,6 +140,19 @@ public class DataBase {
 		return this.ClientIdUsers.get(ClientID);
 	}
 	
+	public ConcurrentLinkedQueue<String> getUsersAsStringsForClient(int ClientID)
+	{
+		ConcurrentLinkedQueue<String> userNames = new ConcurrentLinkedQueue<>();
+		ConcurrentLinkedQueue<User> users = this.ClientIdUsers.get(ClientID);
+		
+		for (User user : users) {
+			userNames.offer(user.getUserName());
+		}
+		
+		return userNames;
+ 	}
+	
+	
 	public ConcurrentLinkedQueue<User> getAllUsers()
 	{
 		return this.UsersList;

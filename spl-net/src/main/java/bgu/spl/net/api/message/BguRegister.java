@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
+import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguRegister extends bguProtocol {
@@ -53,7 +54,7 @@ public class BguRegister extends bguProtocol {
 
 
 	@Override
-	public Serializable act(int ClientID) {
+	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		if (DataBase.getInstance().register(this.username.getMyString(), this.password.getMyString(),ClientID)==false)
 		{
 			return new BguError((short)11, this.opcode);
