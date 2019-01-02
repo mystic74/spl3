@@ -5,7 +5,6 @@ import java.io.Serializable;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
-import bgu.spl.net.api.bguField;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 

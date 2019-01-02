@@ -5,9 +5,16 @@
 #include "BGS/BguFollow.h"
 #include "BGS/BguPost.h"
 #include "BGS/BguRegister.h"
+#include "BGS/BguAck.h"
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
+
+struct opcodeTras
+{
+    short opcode;
+};
+
 int main (int argc, char *argv[]) {
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
@@ -33,15 +40,14 @@ int main (int argc, char *argv[]) {
     while (1) {
         const short bufsize = 1024;
         std::string tempString(1024, '?');
-        char buf[bufsize];
-        strcpy(buf,tempString.data()) ;
+        char buf[tempHeader.getSize()];
         //std::cin.getline(buf, bufsize);
 		//std::string line(buf);
 		int len=1024;
 
         //tempHeader.Serialize((int8_t*)buf);
         tempHeader.Serialize((int8_t*)buf);
-        if (!connectionHandler.sendBytes(buf, bufsize)) {
+        if (!connectionHandler.sendBytes(buf, tempHeader.getSize())) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
@@ -54,12 +60,27 @@ int main (int argc, char *argv[]) {
         // 2. Read a line (up to the newline character using the getline() buffered reader
         // 3. Read up to the null character
         std::string answer;
-        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
-        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
-        if (!connectionHandler.getLine(answer)) {
+        char opcodeArr[2];
+
+
+        // Trying to get the response opcode
+        if (!connectionHandler.getBytes(opcodeArr,2)){
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
+        else
+        {
+            // Cast the op
+            opcodeTras* tempCast = (opcodeTras*)opcodeArr;
+            std::cout << "Debug line. Exiting...\n" << std::endl;
+        }
+
+        // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)
+        // We could also use: connectionHandler.getline(answer) and then get the answer without the newline char at the end
+        //if (!connectionHandler.getLine(answer)) {
+        //   std::cout << "Disconnected. Exiting...\n" << std::endl;
+        //    break;
+        //}
         
 		len=answer.length();
 		// A C string must end with a 0 char delimiter.  When we filled the answer buffer from the socket

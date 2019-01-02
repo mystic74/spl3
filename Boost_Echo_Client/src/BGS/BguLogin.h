@@ -6,7 +6,7 @@
 
 #define SIZE_FOR_RESERVED 1
 #define NULL_TERMINATOR '\0'
-class bguLogin : bguHeader
+class bguLogin : public bguHeader
 {
 
 private:

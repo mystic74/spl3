@@ -3,7 +3,7 @@
 #define BGU_REGISTER_H
 #include "ProtocolDataStructs.h"
 #include <string>
-
+#include <iostream>
 #define SIZE_FOR_RESERVED 1
 #define NULL_TERMINATOR '\0'
 class bguRegister : public bguHeader
@@ -23,11 +23,20 @@ public :
         this->password = password;
     }
 
+    virtual inline int getSize()
+    {
+        int size = strlen(this->username.data()) + strlen(this->username.data()) + 2*SIZE_FOR_RESERVED + sizeof(bguProtocolStruct);
+
+        std::cout << size << std::endl;
+        return size;
+    }
+
 	virtual inline bool Serialize(int8_t* out_buff)
 		{
+            
 			int unSize 	= strlen(this->username.data());
-			int pwdSize = strlen(this->password.data());
-
+			int pwdSize = strlen(this->username.data());;
+            
 			if (out_buff == nullptr)
 				return false;
 			

@@ -1,9 +1,9 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 public class BguError extends bguProtocol {
 	
@@ -17,11 +17,12 @@ public class BguError extends bguProtocol {
 
 	@Override
 	public byte[] encode() {
-		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.MessageOpcode);
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.putShort(MessageOpcode);
+		return bf.array();
 	}
-
+	
 	@Override
 	public bguProtocol decode(byte nextByte) {
 		// TODO Auto-generated method stub

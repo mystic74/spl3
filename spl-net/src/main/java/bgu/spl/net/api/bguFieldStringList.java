@@ -5,7 +5,6 @@ package bgu.spl.net.api;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * @author tom
