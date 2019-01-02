@@ -15,7 +15,7 @@ struct bguAckHeader
 
 class bguAck :public  bguHeader
 {
-    uint16_t    m_MsgOpcode;
+    uint16_t    m_MsgOpcode = 0;
 
     virtual bool Serialize(int8_t* out_buff)
     {
@@ -43,15 +43,20 @@ class bguAck :public  bguHeader
         return true;
     }
 
+    virtual inline  bool decode(char nextBytes[2])
+    {
+        short result = (short)((nextBytes[0] & 0xff) << 8);
+        result += (short)(nextBytes[1] & 0xff);
+        this->m_MsgOpcode  = result;
+
+        return true;
+    }
+
+
     virtual inline uint16_t getMyOPCode()
     {
         return static_cast<uint16_t>(OPCODE::ACK);
     }
-    virtual inline bguHeader* Builder()
-    {
-        return new bguAck();
-    }
-
 };
 #endif // __BGUACK_H_INCL__
 

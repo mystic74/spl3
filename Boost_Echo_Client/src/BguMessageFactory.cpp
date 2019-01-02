@@ -2,6 +2,7 @@
 #include "BGS/BguFollow.h"
 #include "BGS/BguLogin.h"
 #include "BGS/BguAck.h"
+#include "BGS/BguError.h"
 #include "BGS/BguRegister.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
@@ -52,6 +53,8 @@ bguHeader* BguMessageFactory::getMessage(short opcode)
     switch (opcode) {
     case ((int)OPCODE::ACK):
         return new bguAck();
+    case((int)OPCODE::ERROR):
+        return new bguError();
     }
     return nullptr;
 }

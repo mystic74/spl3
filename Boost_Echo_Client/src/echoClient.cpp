@@ -6,10 +6,14 @@
 #include "BGS/BguPost.h"
 #include "BGS/BguRegister.h"
 #include "BGS/BguAck.h"
+#include "BguMessageFactory.h"
+#include "BGS/BguAckMessages/BguAckFollow.h"
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
 
+// Ethernet seems like a valid max?
+#define MAX_MSG_SIZE 1514
 struct opcodeTras
 {
     short opcode;
@@ -60,11 +64,11 @@ int main (int argc, char *argv[]) {
         // 2. Read a line (up to the newline character using the getline() buffered reader
         // 3. Read up to the null character
         std::string answer;
-        char opcodeArr[2];
-
+        char opcodeArr[MAX_MSG_SIZE] = {};
+        bguHeader* curResponse = nullptr;
 
         // Trying to get the response opcode
-        if (!connectionHandler.getBytes(opcodeArr,2)){
+        if (!connectionHandler.getBytes(opcodeArr,4)){
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
@@ -72,7 +76,14 @@ int main (int argc, char *argv[]) {
         {
             // Cast the op
             opcodeTras* tempCast = (opcodeTras*)opcodeArr;
-            std::cout << "Debug line. Exiting...\n" << std::endl;
+            curResponse = BguMessageFactory::getInstance()->getMessage(ntohs(tempCast->opcode));
+            if (curResponse->decode(&opcodeArr[2]))
+                std::cout << "Debug line. Exiting...\n" << std::endl;
+            std::cout << "OG Debug Line...\n" << std::endl;
+        }
+
+        if (curResponse != nullptr) {
+           
         }
 
         // Get back an answer: by using the expected number of bytes (len bytes + newline delimiter)

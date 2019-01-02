@@ -3,6 +3,8 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
+#include <iostream>
+
 
 // Change the Lib to -I
 #include "../Lib/ISerializable.h"
@@ -68,6 +70,12 @@ public:
 		return true;
 
 	}
+
+    virtual inline bool decode(char nextByte[2]) 
+    {
+        std::cout <<  "bguProtocol::decode -> Shouldn't get here! \n" << std::endl;
+        return true;
+    }
 
     virtual inline uint16_t getMyOPCode() = 0;
 };

@@ -111,11 +111,6 @@ public:
         {
             return static_cast<uint16_t>(OPCODE::FOLLOW);
         }
-
-        virtual inline bguHeader* Builder()
-        {
-            return new bguFollow();
-        }
 };
 
 
