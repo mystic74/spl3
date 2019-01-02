@@ -3,7 +3,6 @@ package bgu.spl.net.api.message;
 import java.io.Serializable;
 
 import bgu.spl.net.api.BguFieldString;
-import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 

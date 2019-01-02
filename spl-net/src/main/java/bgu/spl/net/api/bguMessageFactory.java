@@ -1,7 +1,5 @@
 package bgu.spl.net.api;
 
-import bgu.spl.net.api.message.BguACK;
-import bgu.spl.net.api.message.BguError;
 import bgu.spl.net.api.message.BguFollow;
 import bgu.spl.net.api.message.BguLogin;
 import bgu.spl.net.api.message.BguLogout;
@@ -10,7 +8,6 @@ import bgu.spl.net.api.message.BguPost;
 import bgu.spl.net.api.message.BguRegister;
 import bgu.spl.net.api.message.BguStat;
 import bgu.spl.net.api.message.BguUserList;
-import bgu.spl.net.api.message.bguNotification;
 
 public class bguMessageFactory {
 	

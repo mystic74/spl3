@@ -4,16 +4,11 @@ import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.bguMessageFactory;
 import bgu.spl.net.api.bguProtocol;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-
-import javax.xml.soap.MessageFactory;
 
 public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable> {
 
@@ -40,7 +35,12 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
 
     @Override
     public byte[] encode(Serializable message) {
-        return serializeObject(message);
+        return serializeBguMessage((bguProtocol)message);
+    }
+    
+    private byte[] serializeBguMessage(bguProtocol msg)
+    {
+    	return msg.encode();
     }
 
     private byte[] serializeObject(Serializable message) {

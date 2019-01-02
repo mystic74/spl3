@@ -2,7 +2,6 @@ package bgu.spl.net.api.message.bguAckMessages;
 
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguFieldShort;
-import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.message.BguACK;
 import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
