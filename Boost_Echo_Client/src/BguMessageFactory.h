@@ -17,7 +17,8 @@ public:
     // Destructor
     virtual ~BguMessageFactory();
 
-    static bguHeader* getMessage(std::string strLine);
+    static bguHeader* generateMessage(std::string strLine);
+    static bguHeader* getMessage(short opcode);
 protected:
     // Constructor - protected so users cannot call it.
     BguMessageFactory();
@@ -27,7 +28,7 @@ private:
     // TODO: Replace BguMessageFactory with the type of object you want to
     // return the single instance of
     static BguMessageFactory *_instance;
-
+    static bguHeader* tempArr[10];
     // Copy constructor
     // Declared but not defined to prevent auto-generated
     // copy constructor.  Refer to "Effective C++" by Meyers

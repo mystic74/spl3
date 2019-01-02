@@ -61,6 +61,9 @@ public:
 
 		}
 
+        virtual inline bguHeader* Builder(){
+            return new bguPost();
+        }
         virtual inline uint16_t getMyOPCode()
         {
             return static_cast<uint16_t>(OPCODE::POST);
