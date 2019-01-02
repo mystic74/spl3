@@ -3,6 +3,7 @@ package bgu.spl.net.impl.newsfeed;
 import bgu.spl.net.impl.rci.Command;
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class FetchNewsCommand implements Command<NewsFeed> {
 
     private String channel;

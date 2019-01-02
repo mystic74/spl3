@@ -1,6 +1,7 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.DataBase;
@@ -8,8 +9,8 @@ import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.api.message.bguAckMessages.BguAckStat;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguStat extends bguProtocol {
 	
 	private BguFieldString userName;
@@ -21,10 +22,11 @@ public class BguStat extends bguProtocol {
 
 	@Override
 	public byte[] encode() {
-		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode + 
-							 this.userName.getMyString() + '\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.put(this.userName.encode());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 	@Override

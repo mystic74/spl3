@@ -1,10 +1,11 @@
 package bgu.spl.net.api.message.bguAckMessages;
 
 
+import java.nio.ByteBuffer;
+
 import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.message.BguACK;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 @SuppressWarnings("serial")
 public class BguAckFollow extends BguACK {
@@ -20,8 +21,13 @@ public class BguAckFollow extends BguACK {
 
 	@Override
 	public byte[] encode() {
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode + (short)4 + this.numOfUsers.getmShort() + this.UsersNameList.toString()+'\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.putShort((short)4);
+		bf.putShort(this.numOfUsers.mShort);
+		bf.put(this.UsersNameList.toByteArray());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 	

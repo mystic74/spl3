@@ -1,13 +1,14 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguLogin extends bguProtocol {
 	
 	BguFieldString username; 
@@ -21,10 +22,13 @@ public class BguLogin extends bguProtocol {
 	@Override
 	public byte[] encode() {
 		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode +
-							 this.username.getMyString() + '\0' + 
-							 this.password.getMyString() + '\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.put(this.username.encode());
+		bf.putChar('\0');
+		bf.put(this.password.encode());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class BguLogin extends bguProtocol {
 	public Serializable act(int ClientID) {
 		User user = DataBase.getInstance().getUser(this.username.getMyString());
 		
-		if (user==null||!(user.getPassword().equals(this.password))||(user.isLogIN()))
+		if (user==null||!(user.getPassword().equals(this.password.getMyString()))||(user.isLogIN()))
 		{
 			return new BguError((short)11, this.opcode);
 		}

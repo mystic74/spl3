@@ -2,12 +2,13 @@ package bgu.spl.net.api.message;
 
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguRegister extends bguProtocol {
 
 	BguFieldString username; 
@@ -23,8 +24,13 @@ public class BguRegister extends bguProtocol {
 	
 	@Override
 	public byte[] encode() {
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.username.getMyString()+'\0'+this.password+'\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.put(this.username.encode());
+		bf.putChar('\0');
+		bf.put(this.password.encode());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 

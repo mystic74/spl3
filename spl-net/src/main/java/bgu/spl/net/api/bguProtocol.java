@@ -2,6 +2,7 @@ package bgu.spl.net.api;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public abstract class bguProtocol  implements Serializable{
 	
 	protected short opcode;

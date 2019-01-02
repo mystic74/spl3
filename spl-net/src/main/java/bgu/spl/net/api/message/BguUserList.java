@@ -1,6 +1,7 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.DataBase;
@@ -9,6 +10,7 @@ import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.api.message.bguAckMessages.BguAckUserList;
 
+@SuppressWarnings("serial")
 public class BguUserList extends bguProtocol{
 
 	public BguUserList(short op) {
@@ -18,8 +20,9 @@ public class BguUserList extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		// TODO Auto-generated method stub
-		return null;
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		return bf.array();
 	}
 
 	@Override

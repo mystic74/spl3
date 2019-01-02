@@ -1,8 +1,9 @@
 package bgu.spl.net.api.message.bguAckMessages;
 
+import java.nio.ByteBuffer;
+
 import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.message.BguACK;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
 @SuppressWarnings("serial")
 public class BguAckStat extends BguACK {
@@ -21,8 +22,13 @@ public class BguAckStat extends BguACK {
 	
 	@Override
 	public byte[] encode() {
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode + (short)8 + this.posts.getmShort()+ this.followers.getmShort()+this.following.mShort);
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.putShort((short)8);
+		bf.putShort(this.posts.mShort);
+		bf.putShort(this.followers.mShort);
+		bf.putShort(this.following.mShort);
+		return bf.array();
 	}
 
 }

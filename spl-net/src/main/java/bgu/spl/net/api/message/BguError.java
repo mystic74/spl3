@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.bguProtocol;
 
+@SuppressWarnings("serial")
 public class BguError extends bguProtocol {
 	
 	private short MessageOpcode;

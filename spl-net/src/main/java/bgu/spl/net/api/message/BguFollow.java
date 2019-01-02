@@ -1,6 +1,7 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
@@ -9,8 +10,8 @@ import bgu.spl.net.api.bguFieldStringList;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.api.message.bguAckMessages.BguAckFollow;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguFollow extends bguProtocol{
 	
 	private byte Follow;
@@ -39,9 +40,12 @@ public class BguFollow extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode + this.Follow + this.numOfUsers.getmShort() + this.UsersNameList.toString());
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(this.opcode);
+		bf.put(Follow);
+		bf.putShort(this.numOfUsers.mShort);
+		bf.put(this.UsersNameList.toByteArray());
+		return bf.array();
 	}
 
 	@Override

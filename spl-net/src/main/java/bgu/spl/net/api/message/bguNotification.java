@@ -1,11 +1,12 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class bguNotification extends bguProtocol{
 
 	private byte NotificationType;
@@ -23,11 +24,14 @@ public class bguNotification extends bguProtocol{
 	@Override
 	public byte[] encode() {
 		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode + 
-							 this.NotificationType + 
-							 this.PostingUser.getMyString() +'\0' +
-							 this.Content.getMyString() +'\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.put(this.NotificationType);
+		bf.put(this.PostingUser.encode());
+		bf.putChar('\0');
+		bf.put(this.Content.encode());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 	@Override

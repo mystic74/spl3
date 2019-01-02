@@ -1,14 +1,15 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.BguFieldString;
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguPost extends bguProtocol{
 
 	private BguFieldString content;
@@ -21,8 +22,11 @@ public class BguPost extends bguProtocol{
 	@Override
 	public byte[] encode() {
 		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode+this.content.getMyString() + '\0');
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		bf.put(this.content.encode());
+		bf.putChar('\0');
+		return bf.array();
 	}
 
 	@Override
@@ -46,8 +50,8 @@ public class BguPost extends bguProtocol{
 			usersToSendTo.addAll(users.getFollower());
 		}
 		
-		String name="";
-		boolean found =  false;
+//		String name="";
+//		boolean found =  false;
 		int stringIndex = 0;
 		int endingIndex = 0;
 		

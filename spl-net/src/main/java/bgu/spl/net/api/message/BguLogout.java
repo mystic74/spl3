@@ -1,13 +1,14 @@
 package bgu.spl.net.api.message;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguProtocol;
-import bgu.spl.net.impl.rci.ObjectEncoderDecoder;
 
+@SuppressWarnings("serial")
 public class BguLogout extends bguProtocol{
 
 	public BguLogout(short op) {
@@ -17,9 +18,9 @@ public class BguLogout extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		
-		ObjectEncoderDecoder encdec= new ObjectEncoderDecoder();
-		return encdec.encode(super.opcode);
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putShort(opcode);
+		return bf.array();
 	}
 
 	@Override
