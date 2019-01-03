@@ -16,6 +16,19 @@ private:
 	uint8_t reserved2;	
 
 public :
+
+    bguLogin() : username(),
+                 reserved1(0),
+                 password(),
+                 reserved2(0)
+                 {};
+    bguLogin(std::string username, std::string password)
+        {
+         this->username = username;
+         this->reserved1 = 0;  
+         this->password = password;
+         this->reserved2 = 0;
+        }
 	virtual inline bool Serialize(int8_t* out_buff)
 		{
             int unSize 	= strlen(this->username.data());
@@ -106,6 +119,14 @@ public :
         virtual inline uint16_t getMyOPCode()
         {
             return static_cast<uint16_t>(OPCODE::LOGIN);
+        }
+
+        virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+        {
+            if (lineParams.size() != 5)
+                return nullptr;
+
+            return new bguLogin(lineParams[1], lineParams[3]);
         }
 };
 

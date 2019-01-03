@@ -68,6 +68,10 @@ public:
         {
             return static_cast<uint16_t>(OPCODE::POST);
         }
+        virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+        {
+            return new bguPost();
+        }
 };
 
 

@@ -16,11 +16,18 @@ private:
 	uint8_t reserved2;	
 
 public :
-    bguRegister(){};
+    bguRegister(): username(),
+                   reserved1(0),
+                   password(),
+                   reserved2(0)
+                 {};
+                 
     bguRegister(std::string username, std::string password)
     {
         this->username = username;
+    	this->reserved1 = 0;  
         this->password = password;
+    	this->reserved2 = 0;
     }
 
     virtual inline int getSize()
@@ -121,6 +128,14 @@ public :
         virtual inline uint16_t getMyOPCode()
         {
             return static_cast<uint16_t>(OPCODE::REGISTER);
+        }
+
+        virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+        {
+        	if (lineParams.size() != 5)
+        		return nullptr;
+
+        	return new bguRegister(lineParams[1], lineParams[3]);
         }
 };
 

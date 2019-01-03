@@ -9,5 +9,10 @@ class bguLogout : bguHeader
         {
             return OPCODE::REGISTER;
         }
+
+        virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+        {
+            return new bguLogout();
+        }
 }
 #endif

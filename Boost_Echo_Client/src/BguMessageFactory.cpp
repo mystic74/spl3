@@ -38,10 +38,10 @@ bguHeader* BguMessageFactory::generateMessage(std::string strLine)
     }
     
     if (SplitVec[0] == "REGISTER") {
-        return new bguRegister();
+        return  bguRegister().Builder(SplitVec);
     }
     else if (SplitVec[0] == "LOGIN"){
-        return new bguLogin();
+        return bguLogin().Builder(SplitVec);
     }
 
 

@@ -39,8 +39,14 @@ typedef struct{
     
 public:
     bguFollow() : m_follow(0),
-                  m_num_of_users(0)
+                  m_num_of_users(0),
+                  m_nameVector()
     {};
+
+    bguFollow(std::vector<std::string> lineParams)
+    {
+        
+    }
 
     /*  This might be cool, try and use this.
     template <typename... Ts>
@@ -110,6 +116,11 @@ public:
         virtual inline uint16_t getMyOPCode()
         {
             return static_cast<uint16_t>(OPCODE::FOLLOW);
+        }
+
+        virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+        {
+            return new bguFollow(lineParams);
         }
 };
 

@@ -57,6 +57,12 @@ class bguAck :public  bguHeader
     {
         return static_cast<uint16_t>(OPCODE::ACK);
     }
+
+    virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+    {
+        // Shouldn't get here
+        return new bguAck();
+    }
 };
 #endif // __BGUACK_H_INCL__
 

@@ -4,7 +4,8 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <iostream>
-
+#include <vector>
+#include <string>
 
 // Change the Lib to -I
 #include "../Lib/ISerializable.h"
@@ -78,6 +79,8 @@ public:
     }
 
     virtual inline uint16_t getMyOPCode() = 0;
+    virtual inline bguHeader* Builder(std::vector<std::string> lineParams) = 0;
+
 };
 
 

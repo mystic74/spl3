@@ -57,6 +57,11 @@ class bguError :public  bguHeader
     {
         return static_cast<uint16_t>(OPCODE::ERROR);
     }
+
+    virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
+    {
+        return new bguError();
+    }
 };
 #endif // __BGUACK_H_INCL__
 
