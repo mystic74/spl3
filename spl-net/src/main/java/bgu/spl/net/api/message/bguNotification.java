@@ -25,13 +25,18 @@ public class bguNotification extends bguProtocol{
 	@Override
 	public byte[] encode() {
 		
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2 +
+											1 + 
+											this.PostingUser.encode().length +
+											1 + 
+											this.Content.encode().length +
+											1);
 		bf.putShort(opcode);
 		bf.put(this.NotificationType);
 		bf.put(this.PostingUser.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		bf.put(this.Content.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		return bf.array();
 	}
 

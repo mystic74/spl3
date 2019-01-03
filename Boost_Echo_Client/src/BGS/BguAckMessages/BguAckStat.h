@@ -18,6 +18,12 @@ class bguAckStat :public  bguAck
     // Yeah, two name that differ by the ending, that won't be an issue ever right?
     uint16_t 	m_following				= 0;
 
+    public bguAckStat(bguAck papa)
+    {
+        this->m_MsgOpcode = papa.m_MsgOpcode;
+        this->opcode = papa.opcode;
+    }
+
     virtual bool Serialize(int8_t* out_buff)
     {
         /*if (!bguHeader::Serialize(out_buff))

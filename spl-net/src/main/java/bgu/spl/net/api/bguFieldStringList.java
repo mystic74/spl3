@@ -14,6 +14,21 @@ public class bguFieldStringList extends bguField {
 
 	BguFieldString[] m_userNameList = null;
 	
+	@Override
+	public boolean isDone() {
+		if (this.m_userNameList == null)
+			return false;
+		
+		for (BguFieldString bguFieldUserName : m_userNameList) {
+			if (!bguFieldUserName.isDone())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+
 	public BguFieldString[] get_userNameList() {
 		return m_userNameList;
 	}

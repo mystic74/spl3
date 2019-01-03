@@ -42,7 +42,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
 					if (DataBase.getInstance().getUsersAsStringsForClient(nKey).contains(string))
 					{
 						this.send(nKey, msg);
-						userToSend.remove(string);
+						//userToSend.remove(string);
 						break;
 					}
 				}

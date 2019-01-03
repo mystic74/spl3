@@ -21,12 +21,11 @@ public class BguAckFollow extends BguACK {
 
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(6 + this.UsersNameList.toByteArray().length);
 		bf.putShort(opcode);
 		bf.putShort((short)4);
 		bf.putShort(this.numOfUsers.mShort);
 		bf.put(this.UsersNameList.toByteArray());
-		bf.putChar('\0');
 		return bf.array();
 	}
 

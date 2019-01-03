@@ -15,6 +15,7 @@ struct bguAckHeader
 
 class bguAck :public  bguHeader
 {
+public:
     uint16_t    m_MsgOpcode = 0;
 
 
