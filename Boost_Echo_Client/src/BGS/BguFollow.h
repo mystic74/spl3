@@ -39,7 +39,12 @@ typedef struct{
 
     virtual inline int getSize()
     {
-        int size = this->m_nameVector.size() + sizeof(dummyStruct);
+        int size = sizeof(dummyStruct);
+
+        for(auto name : this->m_nameVector)
+        {
+            size += (name.size() + 1);
+        }
 
         std::cout << size << std::endl;
         return size;
@@ -53,7 +58,14 @@ public:
 
     bguFollow(std::vector<std::string> lineParams)
     {
-        
+        if (lineParams.size() > 1) {
+            this->m_follow       = std::stoi(lineParams[1]);
+            this->m_num_of_users = std::stoi(lineParams[2]);
+            
+            for (unsigned int i = 3; i < lineParams.size(); i++) {
+                this->addNameToList(lineParams[i]);
+            }
+        }
     }
 
     /*  This might be cool, try and use this.
@@ -69,7 +81,6 @@ public:
     bool inline addNameToList(std::string name)
     {
         this->m_nameVector.push_back(name);
-        this->m_num_of_users++;
     }
 
     
