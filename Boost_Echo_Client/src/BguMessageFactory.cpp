@@ -6,6 +6,7 @@
 #include "BGS/BguRegister.h"
 #include "BGS/BguLogout.h"
 #include "BGS/BguPost.h"
+#include "BguNotification.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 using namespace std;
@@ -66,6 +67,8 @@ bguHeader* BguMessageFactory::getMessage(short opcode)
         return new bguAck();
     case((int)OPCODE::ERROR):
         return new bguError();
+    case((int)OPCODE::NOTIFICATION):
+        return new bguNotification();
     }
     return nullptr;
 }

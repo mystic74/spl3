@@ -34,7 +34,12 @@ public class BguFollow extends bguProtocol{
 	{
 		ConcurrentLinkedQueue<User> list =  new ConcurrentLinkedQueue<>();
 		for (BguFieldString bguFieldusername : this.UsersNameList.get_userNameList()) {
-			list.offer(DataBase.getInstance().getUser(bguFieldusername.getMyString()));
+			User of = DataBase.getInstance().getUser(bguFieldusername.getMyString());
+			if (of != null)
+			{
+				list.offer(of);
+			}
+			
 		}
 		return list;
 	}
@@ -65,10 +70,12 @@ public class BguFollow extends bguProtocol{
 		if (!this.UsersNameList.isDone())
 		{
 			this.UsersNameList.decode(nextByte, new Integer(this.numOfUsers.getmShort()));
-			return null;
 		}
 		
-		return this;
+		if (this.UsersNameList.isDone())
+			return this;
+		
+		return null;
 	}
 
 	@Override
@@ -79,7 +86,7 @@ public class BguFollow extends bguProtocol{
 
 			int succesfullNum=0;
 
-			if (!userForClient.isLogIN())
+			if ((userForClient == null ) || (!userForClient.isLogIN()))
 			{
 				return new BguError((short)11, this.opcode);
 			}

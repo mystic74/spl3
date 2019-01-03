@@ -8,13 +8,22 @@
 #ifndef SRC_BGS_BGUACKMESSAGES_BGUACKFOLLOW_H_
 #define SRC_BGS_BGUACKMESSAGES_BGUACKFOLLOW_H_
 #include "../BguAck.h"
+#include <boost/algorithm/string.hpp>
+#include <iostream>
+using namespace std;
+using namespace boost;
 
-class bguAckFollow :public  bguAck
+class bguAckFollow : public  bguAck
 {
 	int			m_usersByteCounter 		= 0;
 	int			m_nullTerminatorCounter = 0;
     uint16_t    m_numOfUsers 			= 0;
     std::string m_nameVector 			= "";
+public:
+    bguAckFollow(const bguAck& papa)
+    {
+        this->m_MsgOpcode = papa.m_MsgOpcode;
+    }
 
     virtual bool Serialize(int8_t* out_buff)
     {
@@ -52,7 +61,7 @@ class bguAckFollow :public  bguAck
     		return false;
     	}
 
-    	if( this->m_nullTerminatorCounter < this->m_usersByteCounter)
+    	if( this->m_nullTerminatorCounter < this->m_numOfUsers)
     	{
     		this->m_nameVector += nextBytes;
 
@@ -61,10 +70,31 @@ class bguAckFollow :public  bguAck
     			this->m_nullTerminatorCounter++;
     		}
 
-    		return false;
+    		return ( this->m_nullTerminatorCounter == this->m_numOfUsers);
     	}
 
         return true;
+    }
+
+    virtual inline std::string toString()
+    {
+        std::string rstring = "ACK " + std::to_string(this->m_MsgOpcode);
+
+        rstring += " " + std::to_string(this->m_numOfUsers);
+
+        typedef vector< string > split_vector_type;
+    
+        split_vector_type SplitVec; // #2: Search for tokens
+        split( SplitVec, this->m_nameVector, is_any_of("\0"), token_compress_on ); 
+
+        for (auto var : SplitVec) {
+            rstring += " " + var;
+        }
+        
+        std::cout <<  rstring << std::endl;
+
+        return rstring; 
+
     }
 };
 

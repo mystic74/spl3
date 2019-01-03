@@ -73,7 +73,7 @@ class bguError :public  bguHeader
 
     virtual inline std::string toString()
     {
-        return "ACK "  + std::to_string(this->m_MsgOpcode);
+        return "ERROR "  + std::to_string(this->m_MsgOpcode);
     }
 };
 #endif // __BGUACK_H_INCL__

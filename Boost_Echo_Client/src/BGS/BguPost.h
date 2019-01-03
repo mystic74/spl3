@@ -18,6 +18,16 @@ private:
 
 public:
 
+    bguPost()
+    {
+
+    };
+
+    bguPost(std::vector<std::string> lineParams)
+    {
+        this->content = lineParams[1];
+    }
+
     virtual inline int getSize()
        {
            int size = 1 + strlen(this->content.data()) + sizeof(bguProtocolStruct);
@@ -33,6 +43,7 @@ public:
 
             if(bguHeader::Serialize(out_buff) == false)
             {
+                std::cout << " BGUHEADER Serialize Failed!!! " << std::endl;
                 return false;
             }
 
@@ -76,9 +87,10 @@ public:
         {
             return static_cast<uint16_t>(OPCODE::POST);
         }
+
         virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
         {
-            return new bguPost();
+            return new bguPost(lineParams);
         }
 };
 

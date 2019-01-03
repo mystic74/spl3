@@ -35,16 +35,21 @@ public class BguPost extends bguProtocol{
 		if (!this.content.isDone())
 		{
 			this.content.decode(nextByte);
-			return null;
 		}
+		if (this.content.isDone())
+			return this;
 		
-		return this;
+		return null;
 	}
 	
 	private ConcurrentLinkedQueue<User> UsersToSend(int ClientID)
 	{
 		ConcurrentLinkedQueue<User> usersToSendTo = new ConcurrentLinkedQueue<>();
 		User user = DataBase.getInstance().getUsersForClient(ClientID);
+		
+		if (user == null)
+			return null;
+		
 		for (User followers: user.getFollower())
 		{
 			usersToSendTo.add(followers);
@@ -53,18 +58,21 @@ public class BguPost extends bguProtocol{
 		int stringIndex = 0;
 		int endingIndex = 0;
 		
+		stringIndex = this.content.getMyString().indexOf('@', stringIndex);
+		endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
+		
 		while (stringIndex != -1)
-		{
-			stringIndex = this.content.getMyString().indexOf('@', stringIndex);
-			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
-			
+		{			
 			// We have a '@' but can't fine a ' ', must be the end of the message.
 			if (endingIndex == -1)
 			{
 				endingIndex = this.content.getMyString().length();
 			}
 			
-			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));
+			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));		
+		
+			stringIndex = this.content.getMyString().indexOf('@', stringIndex);
+			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
 		}
 		
 		return usersToSendTo;
@@ -138,7 +146,11 @@ public class BguPost extends bguProtocol{
 		ConcurrentLinkedQueue<String> activeClients = new ConcurrentLinkedQueue<>();
 		ConcurrentLinkedQueue<User> nonActiveClients = new ConcurrentLinkedQueue<>();
 		
-		for (User userToSend: this.UsersToSend(ClientID))
+		ConcurrentLinkedQueue<User> usersToSend = this.UsersToSend(ClientID);
+		if(usersToSend == null)
+			return null;
+		
+		for (User userToSend: usersToSend)
 		{
 			if (userToSend.isLogIN())
 				activeClients.offer(userToSend.getUserName());
