@@ -18,6 +18,7 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
 
     @Override
     public Serializable decodeNextByte(byte nextByte) {
+    	bguProtocol rValue = null;
         if (objectBytes == null) { //indicates that we are still reading the length
             lengthBuffer.put(nextByte);
             if (!lengthBuffer.hasRemaining()) { //we read 4 bytes and therefore can take the length
@@ -27,10 +28,13 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
                 lengthBuffer.clear();
             }
         } else {
-           return objectBytes.decode(nextByte);
+           rValue = objectBytes.decode(nextByte);
+           if (rValue != null)
+        	   objectBytes = null;
+        	   
         }
 
-        return null;
+        return rValue;
     }
 
     @Override

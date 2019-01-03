@@ -17,6 +17,14 @@ class bguAck :public  bguHeader
 {
     uint16_t    m_MsgOpcode = 0;
 
+
+    virtual inline int getSize()
+        {
+            int size = sizeof(bguProtocolStruct) + 2;
+
+            std::cout << "Should not get here" << std::endl;
+            return size;
+        }
     virtual bool Serialize(int8_t* out_buff)
     {
         if (!bguHeader::Serialize(out_buff))
@@ -62,6 +70,11 @@ class bguAck :public  bguHeader
     {
         // Shouldn't get here
         return new bguAck();
+    }
+
+    virtual inline std::string toString()
+    {
+        return "ACK " + std::to_string(this->m_MsgOpcode);
     }
 };
 #endif // __BGUACK_H_INCL__

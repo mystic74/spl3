@@ -60,7 +60,8 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
                     while (buf.hasRemaining()) {
                         T nextMessage = encdec.decodeNextByte(buf.get());
                         if (nextMessage != null) {
-                            protocol.process(nextMessage);                 
+                            protocol.process(nextMessage);
+                            nextMessage = null;
                         }
                     }
                 } finally {

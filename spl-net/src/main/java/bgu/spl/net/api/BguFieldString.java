@@ -18,6 +18,7 @@ public class BguFieldString extends bguField {
 		if (nextByte == 0)
 		{
 			this.isDone = true;
+			System.out.println("The string is " + myString);
 			return myString;
 		}
 		else

@@ -36,6 +36,14 @@ typedef struct{
         return true;
     }
 
+
+    virtual inline int getSize()
+    {
+        int size = this->m_nameVector.size() + sizeof(dummyStruct);
+
+        std::cout << size << std::endl;
+        return size;
+    }
     
 public:
     bguFollow() : m_follow(0),

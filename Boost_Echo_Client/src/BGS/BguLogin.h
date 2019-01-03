@@ -29,6 +29,15 @@ public :
          this->password = password;
          this->reserved2 = 0;
         }
+
+    virtual inline int getSize()
+    {
+        int size = strlen(this->username.data()) + strlen(this->password.data()) + 2*SIZE_FOR_RESERVED + sizeof(bguProtocolStruct);
+
+        std::cout << size << std::endl;
+        return size;
+    }
+
 	virtual inline bool Serialize(int8_t* out_buff)
 		{
             int unSize 	= strlen(this->username.data());
@@ -123,10 +132,10 @@ public :
 
         virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
         {
-            if (lineParams.size() != 5)
+            if (lineParams.size() != 3)
                 return nullptr;
 
-            return new bguLogin(lineParams[1], lineParams[3]);
+            return new bguLogin(lineParams[1], lineParams[2]);
         }
 };
 
