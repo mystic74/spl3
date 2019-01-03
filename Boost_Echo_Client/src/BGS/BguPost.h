@@ -7,7 +7,7 @@
 #include <vector>
 #include <assert.h>
 
-class bguPost : bguHeader
+class bguPost : public bguHeader
 {
     std::string content;
     uint8_t     reserved;
@@ -17,6 +17,14 @@ class bguPost : bguHeader
 private:
 
 public:
+
+    virtual inline int getSize()
+       {
+           int size = 1 + strlen(this->content.data()) + sizeof(bguProtocolStruct);
+
+           return size;
+       }
+
 
 	virtual inline bool Serialize(int8_t* out_buff)
 		{

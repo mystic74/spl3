@@ -4,6 +4,8 @@
 #include "BGS/BguAck.h"
 #include "BGS/BguError.h"
 #include "BGS/BguRegister.h"
+#include "BGS/BguLogout.h"
+#include "BGS/BguPost.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
 using namespace std;
@@ -42,6 +44,15 @@ bguHeader* BguMessageFactory::generateMessage(std::string strLine)
     }
     else if (SplitVec[0] == "LOGIN"){
         return bguLogin().Builder(SplitVec);
+    }
+    else if (SplitVec[0] == "LOGOUT") {
+        return bguLogout().Builder(SplitVec);
+    }
+    else if (SplitVec[0] == "FOLLOW") {
+        return bguFollow().Builder(SplitVec);
+    }
+    else if (SplitVec[0] == "POST") {
+        return bguPost().Builder(SplitVec);
     }
 
 

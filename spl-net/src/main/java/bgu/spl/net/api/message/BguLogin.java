@@ -17,6 +17,8 @@ public class BguLogin extends bguProtocol {
 	
 	public BguLogin(short op) {
 		super(op);
+		this.username = new BguFieldString();
+		this.password = new BguFieldString();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -37,14 +39,16 @@ public class BguLogin extends bguProtocol {
 		if (!this.username.isDone())
 		{
 			this.username.decode(nextByte);
-			return null;
-		}
-		if (!this.password.isDone())
+		}		
+		else if (!this.password.isDone())
 		{
 			this.password.decode(nextByte);
-			return null;
 		}
-		return this;
+
+		if (this.username.isDone() && this.password.isDone())
+			return this;
+		
+		return null;
 	}
 
 	@Override

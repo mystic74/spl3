@@ -37,18 +37,20 @@ public class BguRegister extends bguProtocol {
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// TODO Auto-generated method stub
 		if (!this.username.isDone())
 		{
 			this.username.decode(nextByte);
-			return null;
-		}
-		if (!this.password.isDone())
+		}		
+		else if (!this.password.isDone())
 		{
 			this.password.decode(nextByte);
-			return null;
 		}
-		return this;
+
+		if (this.username.isDone() && this.password.isDone())
+			return this;
+		
+		return null;
+		
 	}
 	
 

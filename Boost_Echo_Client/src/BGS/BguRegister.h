@@ -32,9 +32,8 @@ public :
 
     virtual inline int getSize()
     {
-        int size = strlen(this->username.data()) + strlen(this->username.data()) + 2*SIZE_FOR_RESERVED + sizeof(bguProtocolStruct);
+        int size = strlen(this->username.data()) + strlen(this->password.data()) + 2*SIZE_FOR_RESERVED + sizeof(bguProtocolStruct);
 
-        std::cout << size << std::endl;
         return size;
     }
 
@@ -42,7 +41,7 @@ public :
 		{
             
 			int unSize 	= strlen(this->username.data());
-			int pwdSize = strlen(this->username.data());;
+			int pwdSize = strlen(this->password.data());;
             
 			if (out_buff == nullptr)
 				return false;
@@ -132,10 +131,10 @@ public :
 
         virtual inline bguHeader* Builder(std::vector<std::string> lineParams)
         {
-        	if (lineParams.size() != 5)
+        	if (lineParams.size() != 3)
         		return nullptr;
 
-        	return new bguRegister(lineParams[1], lineParams[3]);
+        	return new bguRegister(lineParams[1], lineParams[2]);
         }
 };
 
