@@ -34,8 +34,7 @@ public class BguUserList extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
-		for (User user : DataBase.getInstance().getUsersForClient(ClientID))
-		{
+		User user = DataBase.getInstance().getUsersForClient(ClientID);
 			if (!user.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);
@@ -51,11 +50,9 @@ public class BguUserList extends bguProtocol{
 			bguFieldShort numOfUsers = new bguFieldShort((short)DataBase.getInstance().getAllUsers().size());
 
 			return new BguAckUserList((short)10,numOfUsers,allUsers);
-			//i need to send Ack for each of the Client Users
-			//but i don't know how to send Ack without return 
-			//TODO change this! send Ack to the current user. delete the return
-		}
-		return this;
+
+		
+
 	}
 
 

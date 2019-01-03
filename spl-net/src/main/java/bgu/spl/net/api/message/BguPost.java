@@ -41,18 +41,46 @@ public class BguPost extends bguProtocol{
 		return this;
 	}
 	
+	private ConcurrentLinkedQueue<User> UsersToSend(int ClientID)
+	{
+		ConcurrentLinkedQueue<User> usersToSendTo = new ConcurrentLinkedQueue<>();
+		User user = DataBase.getInstance().getUsersForClient(ClientID);
+		for (User followers: user.getFollower())
+		{
+			usersToSendTo.add(followers);
+		}
+		
+		int stringIndex = 0;
+		int endingIndex = 0;
+		
+		while (stringIndex != -1)
+		{
+			stringIndex = this.content.getMyString().indexOf('@', stringIndex);
+			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
+			
+			// We have a '@' but can't fine a ' ', must be the end of the message.
+			if (endingIndex == -1)
+			{
+				endingIndex = this.content.getMyString().length();
+			}
+			
+			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));
+		}
+		
+		return usersToSendTo;
+	}
+	
 	private ConcurrentLinkedQueue<String> usersToSendTo(int ClientID)
 	{
 		ConcurrentLinkedQueue<String> usersToSendTo = new ConcurrentLinkedQueue<>();
 		
 		//adds all the followers
-		for (User users : DataBase.getInstance().getUsersForClient(ClientID))
-		{
-			for (User followers: users.getFollower())
+		User user = DataBase.getInstance().getUsersForClient(ClientID);
+			for (User followers: user.getFollower())
 			{
 				usersToSendTo.add(followers.getUserName());
 			}
-		}
+		
 		
 //		String name="";
 //		boolean found =  false;
@@ -104,18 +132,38 @@ public class BguPost extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> currConnections) {
-		ConcurrentLinkedQueue<String> usersToSendPostTo = this.usersToSendTo(ClientID);
-		for (User user: DataBase.getInstance().getUsersForClient(ClientID))
+		
+		
+		
+		ConcurrentLinkedQueue<String> activeClients = new ConcurrentLinkedQueue<>();
+		ConcurrentLinkedQueue<User> nonActiveClients = new ConcurrentLinkedQueue<>();
+		
+		for (User userToSend: this.UsersToSend(ClientID))
 		{
-			user.addPost();
-			DataBase.getInstance().addPost(this.content.getMyString(), user.getUserName());
-			BguFieldString userField = new BguFieldString();
-			userField.setString(user.getUserName());
-			bguNotification notification = new bguNotification((short)9, (byte)1,userField , this.content);
-			currConnections.sendTo(usersToSendPostTo.toArray(new String[1]),notification);
-
-
+			if (userToSend.isLogIN())
+				activeClients.offer(userToSend.getUserName());
+			else			
+				nonActiveClients.offer(userToSend);
+			
 		}
+		
+		User user = DataBase.getInstance().getUsersForClient(ClientID);
+		user.addPost();
+		DataBase.getInstance().addPost(this.content.getMyString(), user.getUserName());
+		BguFieldString userField = new BguFieldString();
+		userField.setString(user.getUserName());
+		bguNotification notification = new bguNotification((short)9, (byte)1,userField , this.content);
+		
+		
+		currConnections.sendTo(activeClients.toArray(new String[1]),notification);
+		
+		
+		for (User nonActoveUser: nonActiveClients)
+		{
+			nonActoveUser.addAwaitMessage(notification);
+		}
+
+		
 		
 		return null;
 	}

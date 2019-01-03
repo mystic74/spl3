@@ -9,6 +9,7 @@ public class User {
 	private boolean isLogin;
 	private String userName;
 	private String password;
+	private ConcurrentLinkedQueue<bguProtocol> awaitingMessages;
 	
 	public User(String UserName, String Password)
 	{
@@ -17,6 +18,20 @@ public class User {
 		this.isLogin=false;
 		this.userName = UserName;
 		this.password=Password;
+		this.awaitingMessages = new ConcurrentLinkedQueue<>();
+	}
+	
+	public void addAwaitMessage(bguProtocol msg)
+	{
+		this.awaitingMessages.offer(msg);
+	}
+	
+	public ConcurrentLinkedQueue<bguProtocol> getAwaitsMessagesAndClear()
+	{
+		ConcurrentLinkedQueue<bguProtocol> tempQueue = new ConcurrentLinkedQueue<>();
+		tempQueue.addAll(this.awaitingMessages);
+		this.awaitingMessages.clear();
+		return tempQueue;
 	}
 	
 	public void addFollower(User name)

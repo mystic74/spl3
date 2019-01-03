@@ -73,13 +73,13 @@ public class BguFollow extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
-		ConcurrentLinkedQueue<User> usersForClient= DataBase.getInstance().getUsersForClient(ClientID);
+		User userForClient= DataBase.getInstance().getUsersForClient(ClientID);
 		
 		//for all the users of the client
-		for (User follower : usersForClient) {
+
 			int succesfullNum=0;
 
-			if (!follower.isLogIN())
+			if (!userForClient.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);
 			}
@@ -89,14 +89,14 @@ public class BguFollow extends bguProtocol{
 				for (User toFollow : stringNamesToList()) {
 					
 			
-					if ((this.Follow==0) && ( toFollow.getFollower().contains(follower)==false))
+					if ((this.Follow==0) && ( toFollow.getFollower().contains(userForClient)==false))
 					{
-						toFollow.addFollower(follower);
+						toFollow.addFollower(userForClient);
 						succesfullNum++;
 					}
-					if ((this.Follow==1) && (toFollow.getFollower().contains(follower)))
+					if ((this.Follow==1) && (toFollow.getFollower().contains(userForClient)))
 					{
-						toFollow.removeFollower(follower);
+						toFollow.removeFollower(userForClient);
 						succesfullNum++;
 					}
 					
@@ -107,7 +107,7 @@ public class BguFollow extends bguProtocol{
 				return new BguError((short)11, this.opcode);
 			}
 
-		}
+		
 		return new BguAckFollow((short)10, this.numOfUsers, this.UsersNameList);
 
 	}

@@ -33,19 +33,19 @@ public class BguLogout extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
-		ConcurrentLinkedQueue<User> usersForClient = DataBase.getInstance().getUsersForClient(ClientID);
-		for (User user : usersForClient) {
-			if (!user.isLogIN())
+		User userForClient = DataBase.getInstance().getUsersForClient(ClientID);
+	
+			if (!userForClient.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);
 
 				
 			}
 
-			user.logout();
+			userForClient.logout();
 
 			
-		}
+		
 
 		return new BguACK((short) 10, this.opcode);
 

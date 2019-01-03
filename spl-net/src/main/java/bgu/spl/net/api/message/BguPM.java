@@ -53,20 +53,28 @@ public class BguPM extends bguProtocol{
 		{
 			return new BguError((short)11, this.opcode);
 		}
-		for (User user: DataBase.getInstance().getUsersForClient(ClientID))
-		{
-			if (!user.isLogIN())
-			{
-				return new BguError((short)11, this.opcode);
-			}
+		User userForClient = DataBase.getInstance().getUsersForClient(ClientID);
 
-			DataBase.getInstance().addPMmessage(user.getUserName(), this.userName.getMyString() , this.content.getMyString());
+
+			DataBase.getInstance().addPMmessage(userForClient.getUserName(), this.userName.getMyString() , this.content.getMyString());
 			BguFieldString sender = new BguFieldString();
-			sender.setString(user.getUserName());
-			new bguNotification((short)9, (byte)0, sender, this.content);
-			//TODO finish
-		}
-		return this;
+			sender.setString(userForClient.getUserName());
+			bguNotification notification =new bguNotification((short)9, (byte)0, sender, this.content);
+			
+			if (!userForClient.isLogIN())
+			{	
+				userForClient.addAwaitMessage(notification);
+			}
+			
+			else
+			{
+				String [] userToArray = new String[1];
+				myConnections.sendTo(userToArray,notification);
+
+			}
+			
+		
+		return null;
 	}
 
 

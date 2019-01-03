@@ -2,6 +2,7 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
@@ -60,6 +61,20 @@ public class BguLogin extends bguProtocol {
 			return new BguError((short)11, this.opcode);
 		}
 		user.login();
+		ConcurrentLinkedQueue<bguProtocol> msgQueue = user.getAwaitsMessagesAndClear();
+		
+		
+		if (!msgQueue.isEmpty())
+		{
+			for (bguProtocol msg:msgQueue)
+			{
+				String[] userToArray = new String[1];
+				userToArray[0]=user.getUserName();
+				mConnectins.sendTo(userToArray,msg);
+			}
+		}
+		
+		
 		return new BguACK((short) 10, this.opcode);
 	}
 

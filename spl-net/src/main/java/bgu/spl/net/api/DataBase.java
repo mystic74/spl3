@@ -14,7 +14,7 @@ public class DataBase {
 	private ConcurrentLinkedQueue<User> UsersList;
 	private ConcurrentLinkedQueue<Post> posts;
 	private ConcurrentLinkedQueue<PMmessage> PMmessages;
-	private ConcurrentHashMap<Integer,ConcurrentLinkedQueue<User>> ClientIdUsers;
+	private ConcurrentHashMap<Integer,User> ClientIdUsers;
 	
 	private DataBase()
 	{
@@ -44,18 +44,10 @@ public class DataBase {
 		
 		User user = new User(userName, Password);
 		this.UsersList.offer(user);
-		
-		if (ClientIdUsers.containsKey(ClientID)==false)
-		{
-			ConcurrentLinkedQueue<User> usersForClient =new ConcurrentLinkedQueue<>();
-			usersForClient.offer(user);	
-			ClientIdUsers.put(ClientID, usersForClient);
-		}
-		else
-		{
-			ClientIdUsers.get(ClientID).offer(user);
-		}
-		
+
+
+		ClientIdUsers.put(ClientID, user);
+
 		return true;
 	}
 	
@@ -70,15 +62,10 @@ public class DataBase {
 				flag =  this.UsersList.remove(user);
 				
 			}
-			for (User u: ClientIdUsers.get(ClientID))
-			{
-				if (u.getUserName().equals(userName.getUserName()))
-				{
-					flag= ClientIdUsers.get(ClientID).remove(u);
-				}
-			}
 			
 		}
+		ClientIdUsers.remove(ClientID);
+
 		return flag;
 	}
 	
@@ -135,21 +122,16 @@ public class DataBase {
 		return result;
 	}
 	
-	public ConcurrentLinkedQueue<User> getUsersForClient(int ClientID)
+	public User getUsersForClient(int ClientID)
 	{
 		return this.ClientIdUsers.get(ClientID);
 	}
 	
-	public ConcurrentLinkedQueue<String> getUsersAsStringsForClient(int ClientID)
+	public String getUsersAsStringsForClient(int ClientID)
 	{
-		ConcurrentLinkedQueue<String> userNames = new ConcurrentLinkedQueue<>();
-		ConcurrentLinkedQueue<User> users = this.ClientIdUsers.get(ClientID);
 		
-		for (User user : users) {
-			userNames.offer(user.getUserName());
-		}
-		
-		return userNames;
+		return this.ClientIdUsers.get(ClientID).getUserName();
+
  	}
 	
 	
