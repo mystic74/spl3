@@ -22,7 +22,7 @@ public class BguAckStat extends BguACK {
 	
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(10);
 		bf.putShort(opcode);
 		bf.putShort((short)8);
 		bf.putShort(this.posts.mShort);

@@ -25,11 +25,7 @@ public class BguFollow extends bguProtocol{
 		this.numOfUsers 	= new bguFieldShort();
 		this.UsersNameList 	= new bguFieldStringList();
 	}
-	
 
-	
-	
-	
 	private ConcurrentLinkedQueue<User> stringNamesToList()
 	{
 		ConcurrentLinkedQueue<User> list =  new ConcurrentLinkedQueue<>();
@@ -117,6 +113,17 @@ public class BguFollow extends bguProtocol{
 		
 		return new BguAckFollow((short)10, this.numOfUsers, this.UsersNameList);
 
+	}
+
+
+
+
+
+	@Override
+	public bguProtocol isDone() {
+		if ((this.Follow != -1) && this.numOfUsers.isDone() && this.UsersNameList.isDone())
+			return this;
+		return null;
 	}
 
 

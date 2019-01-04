@@ -10,7 +10,7 @@ import bgu.spl.net.api.bidi.ConnectionsImpl;
 @SuppressWarnings("serial")
 public class bguNotification extends bguProtocol{
 
-	private byte NotificationType;
+	private byte NotificationType = -1;
 	private BguFieldString PostingUser;
 	private BguFieldString Content;
 	
@@ -67,6 +67,14 @@ public class bguNotification extends bguProtocol{
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		// TODO Auto-generated method stub
 		return this;
+	}
+
+	@Override
+	public bguProtocol isDone() {
+		if ((this.NotificationType != -1) && this.Content.isDone() && this.PostingUser.isDone())
+			return this;
+		
+		return null;
 	}
 
                   

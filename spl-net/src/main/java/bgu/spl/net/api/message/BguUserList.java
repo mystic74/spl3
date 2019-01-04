@@ -52,5 +52,10 @@ public class BguUserList extends bguProtocol{
 
 	}
 
+	@Override
+	public bguProtocol isDone() {
+		return this;
+	}
+
 
 }

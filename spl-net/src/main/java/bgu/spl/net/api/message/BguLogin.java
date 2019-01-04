@@ -78,4 +78,12 @@ public class BguLogin extends bguProtocol {
 		return new BguACK((short) 10, this.opcode);
 	}
 
+	@Override
+	public bguProtocol isDone() {
+		if (this.username.isDone() && this.password.isDone())
+			return this;
+		
+		return null;
+	}
+
 }

@@ -69,10 +69,13 @@ public class BguPost extends bguProtocol{
 				endingIndex = this.content.getMyString().length();
 			}
 			
-			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)));		
+			String substring = this.content.getMyString().substring(stringIndex + 1, endingIndex);
+			User usrFromString = DataBase.getInstance().getUser(substring);
+			if (usrFromString != null)
+				usersToSendTo.offer(usrFromString);		
 		
-			stringIndex = this.content.getMyString().indexOf('@', stringIndex);
-			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex);
+			stringIndex = this.content.getMyString().indexOf('@', stringIndex + 1);
+			endingIndex = this.content.getMyString().indexOf(' ' , stringIndex + 1);
 		}
 		
 		return usersToSendTo;
@@ -176,6 +179,14 @@ public class BguPost extends bguProtocol{
 		}
 
 		
+		
+		return null;
+	}
+
+	@Override
+	public bguProtocol isDone() {
+		if (this.content.isDone())
+			return this;
 		
 		return null;
 	}

@@ -39,14 +39,16 @@ public class BguLogout extends bguProtocol{
 
 				
 			}
-
 			userForClient.logout();
-
-			
-		
 
 		return new BguACK((short) 10, this.opcode);
 
+	}
+
+	@Override
+	public bguProtocol isDone() {
+		// TODO Auto-generated method stub
+		return this;
 	}
 
 

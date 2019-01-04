@@ -9,19 +9,21 @@
 #define SRC_BGS_BGUACKMESSAGES_BGUACKSTAT_H_
 #include "../BguAck.h"
 
-class bguAckStat :public  bguAck
+class bguAckStat : public  bguAck
 {
-	int			m_usersByteCounter[3] 	= {};
+	
+    int			m_usersByteCounter[3] 	= {};
     uint16_t    m_posts 				= 0;
     uint16_t 	m_followers				= 0;
 
     // Yeah, two name that differ by the ending, that won't be an issue ever right?
     uint16_t 	m_following				= 0;
 
-    public bguAckStat(bguAck papa)
+public:
+
+    bguAckStat(bguAck papa)
     {
         this->m_MsgOpcode = papa.m_MsgOpcode;
-        this->opcode = papa.opcode;
     }
 
     virtual bool Serialize(int8_t* out_buff)
@@ -73,10 +75,21 @@ class bguAckStat :public  bguAck
 			this->m_following 	 = this->m_following << 8;
 			this->m_following 	|= (short)(nextBytes & 0xff);
 			this->m_usersByteCounter[2]++;
-			return false;
 		}
 
-        return true;
+        return (this->m_usersByteCounter[2] == 2);
+    }
+
+
+    virtual inline std::string toString()
+    {
+        std::string rstring = "ACK " + std::to_string(this->m_MsgOpcode);
+
+        rstring += " " + std::to_string(this->m_posts);
+        rstring += " " + std::to_string(this->m_followers);
+        rstring += " " + std::to_string(this->m_following);
+        
+        return rstring;
     }
 };
 

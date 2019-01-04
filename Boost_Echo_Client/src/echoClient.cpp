@@ -9,6 +9,8 @@
 #include "BguNotification.h"
 #include "BguMessageFactory.h"
 #include "BGS/BguAckMessages/BguAckFollow.h"
+#include "BGS/BguAckMessages/BguAckUserList.h"
+#include "BGS/BguAckMessages/BguAckStat.h"
 #include <thread>
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
@@ -60,7 +62,9 @@ void getNewMessages(ConnectionHandler* ch)
                     if (curResponse->decode(ackErrArr))
                     {
                         if (curResponse->getMyOPCode() == 10) {
-                            if (((bguAck*)curResponse)->m_MsgOpcode == 4) {
+
+                        	 // Ack Follow
+                        	if (((bguAck*)curResponse)->m_MsgOpcode == 4) {
                                 bguAck* tempCast = ((bguAck*) curResponse);
                                 bguAckFollow* bgack = new bguAckFollow((*tempCast));
                                 delete(curResponse);
@@ -71,12 +75,36 @@ void getNewMessages(ConnectionHandler* ch)
                                 } 
                                 while (!bgack->decode(readAck[0])); 
                             }
+                        	else if (((bguAck*)curResponse)->m_MsgOpcode == 7) {
+                        		std::cout << " GOT AckUserList" << std::endl;
+                        		bguAck* tempCast = ((bguAck*) curResponse);
+                        		bguAckUserList* bgack = new bguAckUserList((*tempCast));
+								delete(curResponse);
+								curResponse = bgack;
+								char readAck[1];
+								do {
+									ch->getBytes(readAck,1);
+								}
+								while (!bgack->decode(readAck[0]));
+                        	}
+                            else if (((bguAck*)curResponse)->m_MsgOpcode == 8) {
+                                std::cout << " GOT AckStat" << std::endl;
+                                bguAck* tempCast = ((bguAck*) curResponse);
+                                bguAckStat* bgack = new bguAckStat((*tempCast));
+                                delete(curResponse);
+                                curResponse = bgack;
+                                char readAck[1];
+                                do {
+                                    ch->getBytes(readAck,1);
+                                }
+                                while (!bgack->decode(readAck[0]));
+                            }
                         }
-                        std::cout << "CLIENT > "  << curResponse->toString() << std::endl;
+                        
                     }
                 }
             }
-
+            std::cout << "CLIENT > "  << curResponse->toString() << std::endl;
             if (curResponse != nullptr) {
                delete(curResponse);
                curResponse = nullptr;

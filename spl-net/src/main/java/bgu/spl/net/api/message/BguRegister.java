@@ -68,5 +68,13 @@ public class BguRegister extends bguProtocol {
 	}
 
 
+	@Override
+	public bguProtocol isDone() {
+		if (this.password.isDone() && this.username.isDone())
+			return this;
+		return null;
+	}
+
+
 
 }

@@ -74,11 +74,20 @@ public class BguPM extends bguProtocol{
 			
 			else
 			{
+				// TODO TomR : Null check, crashes with contains on NullPointerException
 				String [] userToArray = new String[1];
 				myConnections.sendTo(userToArray,notification);
 
 			}
 			
+		
+		return null;
+	}
+
+	@Override
+	public bguProtocol isDone() {
+		if (this.content.isDone() && this.userName.isDone())
+			return this;
 		
 		return null;
 	}

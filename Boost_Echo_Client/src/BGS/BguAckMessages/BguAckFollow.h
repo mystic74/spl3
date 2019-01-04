@@ -82,19 +82,20 @@ public:
 
         rstring += " " + std::to_string(this->m_numOfUsers);
 
-        typedef vector< string > split_vector_type;
-    
-        split_vector_type SplitVec; // #2: Search for tokens
-        split( SplitVec, this->m_nameVector, is_any_of("\0"), token_compress_on ); 
-
-        for (auto var : SplitVec) {
-            rstring += " " + var;
+        for (int index = 0; index < this->m_nameVector.size(); index++)
+        {
+            char cr = this->m_nameVector.data()[index];
+            if (cr == '\0')
+            {
+                rstring += " ";
+            }
+            else
+            {
+                rstring += cr;
+            }
         }
-        
-        std::cout <<  rstring << std::endl;
 
-        return rstring; 
-
+        return rstring;
     }
 };
 

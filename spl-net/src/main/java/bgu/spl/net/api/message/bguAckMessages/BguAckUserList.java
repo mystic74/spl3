@@ -21,12 +21,15 @@ public class BguAckUserList extends BguACK{
 	
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2 +
+											2 +
+											2 +
+											this.userNameList.encode().length +
+											1);
 		bf.putShort(opcode);
 		bf.putShort((short)7);
 		bf.putShort(this.NumOfUsers.mShort);
 		bf.put(this.userNameList.encode());
-		bf.putChar('\0');
 		return bf.array();
 	}
 

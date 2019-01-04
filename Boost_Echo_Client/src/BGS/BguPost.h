@@ -25,7 +25,12 @@ public:
 
     bguPost(std::vector<std::string> lineParams)
     {
+
         this->content = lineParams[1];
+        for (int nIndex = 2; nIndex < lineParams.size(); nIndex++)
+        {
+            this->content +=  " " + lineParams[nIndex];
+        }
     }
 
     virtual inline int getSize()

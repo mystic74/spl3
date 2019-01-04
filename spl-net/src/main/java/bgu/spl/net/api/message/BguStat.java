@@ -67,6 +67,13 @@ public class BguStat extends bguProtocol {
 
 	}
 
+	@Override
+	public bguProtocol isDone() {
+		if (this.userName.isDone())
+			return this;
+		return null;
+	}
+
 
 
 }

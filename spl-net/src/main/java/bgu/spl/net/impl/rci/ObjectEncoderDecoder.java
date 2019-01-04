@@ -26,6 +26,7 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
                 objectBytes = new bguMessageFactory().getMessage(lengthBuffer.getShort());
                 objectBytesIndex = 0;
                 lengthBuffer.clear();
+                rValue  = objectBytes.isDone();
             }
         } else {
            rValue = objectBytes.decode(nextByte);

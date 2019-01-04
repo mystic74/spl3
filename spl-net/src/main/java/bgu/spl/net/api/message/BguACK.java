@@ -3,24 +3,26 @@ package bgu.spl.net.api.message;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 
+import bgu.spl.net.api.bguFieldShort;
 import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")
 public class BguACK extends bguProtocol {
 	
-	private short MessageOpcode;
+	private bguFieldShort MessageOpcode;
 	
 	public BguACK(short op, short msgOpCode) {
 		super(op);
-		this.MessageOpcode = msgOpCode;
+		this.MessageOpcode = new bguFieldShort();
+		this.MessageOpcode.mShort = msgOpCode;
 	}
 
 	@Override
 	public byte[] encode() {
 		ByteBuffer bf = ByteBuffer.allocate(4);
 		bf.putShort(opcode);
-		bf.putShort(MessageOpcode);
+		bf.putShort(MessageOpcode.mShort);
 		return bf.array();
 	}
 
@@ -34,6 +36,13 @@ public class BguACK extends bguProtocol {
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		// TODO Auto-generated method stub
 		return this;
+	}
+
+	@Override
+	public bguProtocol isDone() {
+		if (this.MessageOpcode.isDone())
+			return this;
+		return null;
 	}
 
 

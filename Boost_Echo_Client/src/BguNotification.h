@@ -7,6 +7,10 @@
 using namespace std;
 using namespace boost;
 
+#define PM_TYPE 0
+#define PUBLIC_TYPE 1
+
+
 class bguNotification : public  bguHeader
 {
 	int8_t		m_notType        		= -1;
@@ -80,7 +84,7 @@ public:
                 this->m_content        += nextBytes;
             }
 
-            return false;
+            return this->m_contentIsDone;
         }
 
         return true;
@@ -88,7 +92,15 @@ public:
 
     virtual inline std::string toString()
     {
-        std::string rstring = "NOTIFICATION " + std::to_string(this->m_notType);
+        std::string rstring = "NOTIFICATION ";
+        if (this->m_notType == PM_TYPE)
+        {
+            rstring += " PM";
+        }
+        if (this->m_notType == PUBLIC_TYPE)
+        {
+            rstring += " PUBLIC";
+        }
 
         rstring += " " + this->m_postingUser;
         rstring += " " + this->m_content;

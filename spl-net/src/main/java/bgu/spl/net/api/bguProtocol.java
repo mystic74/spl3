@@ -14,7 +14,7 @@ public abstract class bguProtocol  implements Serializable{
 	{
 		this.opcode=op;
 	}
-	
+	public abstract bguProtocol isDone();
 	public abstract byte[] encode();
 	public abstract bguProtocol decode(byte nextByte);
 	public abstract Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections);
