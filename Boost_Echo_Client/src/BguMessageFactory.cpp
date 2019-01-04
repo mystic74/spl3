@@ -6,6 +6,9 @@
 #include "BGS/BguRegister.h"
 #include "BGS/BguLogout.h"
 #include "BGS/BguPost.h"
+#include "BGS/BguPM.h"
+#include "BGS/BguUserList.h"
+#include "BGS/BguStat.h"
 #include "BguNotification.h"
 #include <boost/algorithm/string.hpp>
 #include <iostream>
@@ -40,22 +43,41 @@ bguHeader* BguMessageFactory::generateMessage(std::string strLine)
         return nullptr;
     }
     
+    // 1
     if (SplitVec[0] == "REGISTER") {
         return  bguRegister().Builder(SplitVec);
     }
+    // 2 
     else if (SplitVec[0] == "LOGIN"){
         return bguLogin().Builder(SplitVec);
     }
+    // 3
     else if (SplitVec[0] == "LOGOUT") {
         return bguLogout().Builder(SplitVec);
     }
+    // 4
     else if (SplitVec[0] == "FOLLOW") {
         return bguFollow().Builder(SplitVec);
     }
+    // 5
     else if (SplitVec[0] == "POST") {
         return bguPost().Builder(SplitVec);
     }
-
+    // 6
+    else if (SplitVec[0] == "PM")
+    {
+        return bguPM().Builder(SplitVec);
+    }
+    // 7
+    else if (SplitVec[0] == "USERLIST")
+    {
+        return bguUserlist().Builder(SplitVec);
+    }
+    // 8
+    else if (SplitVec[0] == "STAT")
+    {
+        return bguStat().Builder(SplitVec);
+    }
 
     return nullptr;
 }

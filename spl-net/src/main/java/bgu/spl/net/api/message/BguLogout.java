@@ -26,8 +26,6 @@ public class BguLogout extends bguProtocol{
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// Shouldn't get here should we?
-		
 		return null;
 	}
 

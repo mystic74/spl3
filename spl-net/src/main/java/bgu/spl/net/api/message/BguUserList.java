@@ -28,7 +28,6 @@ public class BguUserList extends bguProtocol{
 
 	@Override
 	public bguProtocol decode(byte nextByte) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -50,8 +49,6 @@ public class BguUserList extends bguProtocol{
 			bguFieldShort numOfUsers = new bguFieldShort((short)DataBase.getInstance().getAllUsers().size());
 
 			return new BguAckUserList((short)10,numOfUsers,allUsers);
-
-		
 
 	}
 

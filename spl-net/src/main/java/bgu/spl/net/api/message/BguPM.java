@@ -23,12 +23,16 @@ public class BguPM extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(/*OPCODE*/ 2 + 
+											this.userName.encode().length + 
+											/* reserved 1*/1 + 
+											this.content.encode().length +
+											/* reserved 2*/1);
 		bf.putShort(opcode);
 		bf.put(this.userName.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		bf.put(this.content.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		return bf.array();
 	}
 
@@ -37,14 +41,16 @@ public class BguPM extends bguProtocol{
 		if (!this.userName.isDone())
 		{
 			this.userName.decode(nextByte);
-			return null;
 		}
-		if (!this.content.isDone())
+		else if (!this.content.isDone())
 		{
 			this.content.decode(nextByte);
-			return null;
 		}
-		return this;
+		
+		if (this.userName.isDone() && this.content.isDone())
+			return this;
+		
+		return null;
 	}
 
 	@Override

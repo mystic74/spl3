@@ -35,9 +35,12 @@ public class BguStat extends bguProtocol {
 		if (!this.userName.isDone())
 		{
 			this.userName.decode(nextByte);
-			return null;
 		}
-		return this;
+		
+		if (this.userName.isDone())
+			return this;
+		
+		return null;
 	}
 
 	@Override

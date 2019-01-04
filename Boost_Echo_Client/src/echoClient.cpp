@@ -9,12 +9,14 @@
 #include "BguNotification.h"
 #include "BguMessageFactory.h"
 #include "BGS/BguAckMessages/BguAckFollow.h"
+#include <thread>
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
 
 // Ethernet seems like a valid max?
 #define MAX_MSG_SIZE 1514
+
 struct opcodeTras
 {
     short opcode;
