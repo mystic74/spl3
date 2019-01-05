@@ -38,7 +38,9 @@ public class RemoteCommandInvocationProtocol<T> implements BidiMessagingProtocol
 	@Override
 	public void process(Serializable message) {
 	Serializable returnVal = ((bguProtocol) message).act(this.ClientID, ((ConnectionsImpl<bguProtocol>)this.connectionInstance));
-	this.connectionInstance.send(this.ClientID, (T) returnVal);
+	if (returnVal != null)
+		this.connectionInstance.send(this.ClientID, (T) returnVal);
+	
 	}
 
 

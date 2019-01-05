@@ -46,7 +46,6 @@ public class DataBase {
 		this.UsersList.offer(user);
 
 
-		ClientIdUsers.put(ClientID, user);
 
 		return true;
 	}
@@ -67,6 +66,11 @@ public class DataBase {
 		ClientIdUsers.remove(ClientID);
 
 		return flag;
+	}
+	
+	public void addClientID(User user, int ClientID)
+	{
+		ClientIdUsers.put(ClientID, user);
 	}
 	
 	
@@ -129,8 +133,12 @@ public class DataBase {
 	
 	public String getUsersAsStringsForClient(int ClientID)
 	{
+		User currUsr = this.ClientIdUsers.get(ClientID);
 		
-		return this.ClientIdUsers.get(ClientID).getUserName();
+		if (currUsr != null)
+			return currUsr.getUserName();
+		
+		return null;
 
  	}
 	

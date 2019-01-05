@@ -62,7 +62,7 @@ public class BguLogin extends bguProtocol {
 		}
 		user.login();
 		ConcurrentLinkedQueue<bguProtocol> msgQueue = user.getAwaitsMessagesAndClear();
-		
+		DataBase.getInstance().addClientID(user, ClientID);
 		
 		if (!msgQueue.isEmpty())
 		{

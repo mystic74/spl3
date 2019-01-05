@@ -33,7 +33,10 @@ public class BguLogout extends bguProtocol{
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		User userForClient = DataBase.getInstance().getUsersForClient(ClientID);
 	
-			if (!userForClient.isLogIN())
+			if (userForClient== null)
+				return null;
+				
+			if(!userForClient.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);
 

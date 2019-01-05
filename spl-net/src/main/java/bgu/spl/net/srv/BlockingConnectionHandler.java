@@ -20,8 +20,8 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     // Inherited function, do we need this?
     // YES!
     public void send(T msg) {
-    	 try (Socket sock = this.sock) { //just for automatic closing
-             out = new BufferedOutputStream(sock.getOutputStream());
+    	 try { //just for automatic closing
+             out = new BufferedOutputStream(this.sock.getOutputStream());
     		 out.write(encdec.encode(msg));
              out.flush();
     	 } catch (IOException e) {

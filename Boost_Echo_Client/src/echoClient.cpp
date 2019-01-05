@@ -146,6 +146,8 @@ void getTextAndSend(ConnectionHandler* ch)
     }
 }
 int main (int argc, char *argv[]) {
+    std::setlocale(LC_ALL, "he.UTF-8");
+
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
         return -1;

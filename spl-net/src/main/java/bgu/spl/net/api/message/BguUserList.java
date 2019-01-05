@@ -34,6 +34,8 @@ public class BguUserList extends bguProtocol{
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
 		User user = DataBase.getInstance().getUsersForClient(ClientID);
+			if (user == null)
+				return null;
 			if (!user.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);

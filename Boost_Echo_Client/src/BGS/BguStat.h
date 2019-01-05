@@ -17,7 +17,7 @@ private:
 
 public:
 
-    bguStat() : username(0),
+    bguStat() : username(),
                 reserved(0),
                 nameVector()
     {

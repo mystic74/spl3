@@ -163,14 +163,13 @@ public class BguPost extends bguProtocol{
 		}
 		
 		User user = DataBase.getInstance().getUsersForClient(ClientID);
-		user.addPost();
 		DataBase.getInstance().addPost(this.content.getMyString(), user.getUserName());
 		BguFieldString userField = new BguFieldString();
 		userField.setString(user.getUserName());
 		bguNotification notification = new bguNotification((short)9, (byte)1,userField , this.content);
 		
-		
-		currConnections.sendTo(activeClients.toArray(new String[1]),notification);
+		if (!activeClients.isEmpty())
+			currConnections.sendTo(activeClients.toArray(new String[1]),notification);
 		
 		
 		for (User nonActoveUser: nonActiveClients)

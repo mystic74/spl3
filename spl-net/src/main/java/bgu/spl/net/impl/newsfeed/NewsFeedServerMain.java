@@ -16,12 +16,15 @@ public class NewsFeedServerMain {
 //                ObjectEncoderDecoder::new //message encoder decoder factory
 //        ).serve();
 
-        Server.reactor(
-                Runtime.getRuntime().availableProcessors(),
-                7777, //port
-                () -> new RemoteCommandInvocationProtocol<>(feed), //protocol factory
-                ObjectEncoderDecoder::new //message encoder decoder factory
-        ).serve();
+        Server.threadPerClient(	7777,
+        						() -> new RemoteCommandInvocationProtocol<>(feed), //protocol factory,
+        						ObjectEncoderDecoder::new).serve(); //message encoder decoder factory)
+//        Server.reactor(
+//                Runtime.getRuntime().availableProcessors(),
+//                7777, //port
+//                () -> new RemoteCommandInvocationProtocol<>(feed), //protocol factory
+//                ObjectEncoderDecoder::new //message encoder decoder factory
+//        ).serve();
 
     }
 }
