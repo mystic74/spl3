@@ -29,12 +29,10 @@ public class ObjectEncoderDecoder implements MessageEncoderDecoder<Serializable>
                 rValue  = objectBytes.isDone();
             }
         } else {
-           rValue = objectBytes.decode(nextByte);
-           if (rValue != null)
-        	   objectBytes = null;
-        	   
+           rValue = objectBytes.decode(nextByte);   
         }
-
+        if (rValue != null)
+     	   objectBytes = null;
         return rValue;
     }
 

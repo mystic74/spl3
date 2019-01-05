@@ -17,12 +17,14 @@ private:
 
 public:
 
-    bguStat()
+    bguStat() : username(0),
+                reserved(0),
+                nameVector()
     {
 
     };
 
-    bguStat(std::vector<std::string> lineParams)
+    bguStat(std::vector<std::string> lineParams) : bguStat()
     {
         this->username = lineParams[1];
     }

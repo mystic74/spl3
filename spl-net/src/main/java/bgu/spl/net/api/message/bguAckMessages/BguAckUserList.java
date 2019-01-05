@@ -24,8 +24,7 @@ public class BguAckUserList extends BguACK{
 		ByteBuffer bf = ByteBuffer.allocate(2 +
 											2 +
 											2 +
-											this.userNameList.encode().length +
-											1);
+											this.userNameList.encode().length);
 		bf.putShort(opcode);
 		bf.putShort((short)7);
 		bf.putShort(this.NumOfUsers.mShort);

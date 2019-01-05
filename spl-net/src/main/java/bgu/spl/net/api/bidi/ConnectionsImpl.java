@@ -39,7 +39,8 @@ public class ConnectionsImpl<T> implements Connections<T> {
 		for (Integer nKey : this.m_ClientList.keySet()) {
 			{
 				for (String string : userToSend) {
-					if (DataBase.getInstance().getUsersAsStringsForClient(nKey).contains(string))
+					String userName = DataBase.getInstance().getUsersAsStringsForClient(nKey);
+					if ((userName != null) && (userName.contains(string)))
 					{
 						this.send(nKey, msg);
 						//userToSend.remove(string);

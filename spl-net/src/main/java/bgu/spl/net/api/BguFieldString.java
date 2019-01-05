@@ -1,7 +1,5 @@
 package bgu.spl.net.api;
 
-import java.nio.ByteBuffer;
-
 public class BguFieldString extends bguField {
 	
 	String myString = "";

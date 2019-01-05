@@ -16,7 +16,7 @@ public:
         }
         virtual inline uint16_t getMyOPCode()
         {
-            return static_cast<uint16_t>(OPCODE::REGISTER);
+            return static_cast<uint16_t>(OPCODE::LOGOUT);
         }
 
         virtual inline bguHeader* Builder(std::vector<std::string> lineParams)

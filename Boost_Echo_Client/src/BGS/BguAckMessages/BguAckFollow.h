@@ -82,7 +82,7 @@ public:
 
         rstring += " " + std::to_string(this->m_numOfUsers);
 
-        for (int index = 0; index < this->m_nameVector.size(); index++)
+        for (unsigned int index = 0; index < this->m_nameVector.size(); index++)
         {
             char cr = this->m_nameVector.data()[index];
             if (cr == '\0')

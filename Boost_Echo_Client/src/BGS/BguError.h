@@ -18,6 +18,11 @@ class bguError :public  bguHeader
 {
     uint16_t    m_MsgOpcode;
 
+public:
+    bguError() : m_MsgOpcode(0)
+    {
+    };
+
     virtual inline int getSize()
     {
         int size = sizeof(bguProtocolStruct) + 2;

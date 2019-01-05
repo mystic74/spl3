@@ -17,16 +17,19 @@ private:
 
 public:
 
-    bguPM()
+    bguPM() : username(),
+              reserved1(0),
+              content(),
+              reserved2(0)
     {
 
     };
 
-    bguPM(std::vector<std::string> lineParams)
+    bguPM(std::vector<std::string> lineParams) : bguPM()
     {
         this->username = lineParams[1];
         
-        for (int nIndex = 2; nIndex < lineParams.size(); nIndex++)
+        for (unsigned int nIndex = 2; nIndex < lineParams.size(); nIndex++)
         {
             this->content += lineParams[nIndex];
         }
@@ -68,8 +71,7 @@ public:
 
 		virtual inline bool Deserialize(const int8_t* in_buff, const unsigned int size_of_buffer)
 		{
-            unsigned int index = 0;
-			char tempBuffer[size_of_buffer] = { };
+//			char tempBuffer[size_of_buffer] = { };
 
 			// Sanity   
 			if (in_buff == nullptr)

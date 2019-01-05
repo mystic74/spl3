@@ -53,10 +53,11 @@ typedef struct{
 public:
     bguFollow() : m_follow(0),
                   m_num_of_users(0),
+                  m_userNameList(),
                   m_nameVector()
     {};
 
-    bguFollow(std::vector<std::string> lineParams)
+    bguFollow(std::vector<std::string> lineParams) : bguFollow()
     {
         if (lineParams.size() > 1) {
             this->m_follow       = std::stoi(lineParams[1]);
@@ -81,6 +82,7 @@ public:
     bool inline addNameToList(std::string name)
     {
         this->m_nameVector.push_back(name);
+        return true;
     }
 
     

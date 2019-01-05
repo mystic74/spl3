@@ -99,6 +99,11 @@ void getNewMessages(ConnectionHandler* ch)
                                 }
                                 while (!bgack->decode(readAck[0]));
                             }
+                            else if (((bguAck*)curResponse)->m_MsgOpcode == 3)
+                            {
+                                std::cout << " GOT Ack for logout" << std::endl;
+                            }
+
                         }
                         
                     }

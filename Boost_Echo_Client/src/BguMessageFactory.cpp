@@ -32,8 +32,6 @@ BguMessageFactory* BguMessageFactory::getInstance() {
 
 bguHeader* BguMessageFactory::generateMessage(std::string strLine)
 {
-    // Get the opcode from the line, for now, just checking one
-    uint16_t opcode = static_cast<short>(OPCODE::REGISTER);
    typedef vector< string > split_vector_type;
     
     split_vector_type SplitVec; // #2: Search for tokens

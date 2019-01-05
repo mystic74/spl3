@@ -78,9 +78,9 @@ public:
         return true;
     }
 
-    virtual inline uint16_t getMyOPCode() = 0;
-    virtual inline bguHeader* Builder(std::vector<std::string> lineParams) = 0;
-    virtual inline int getSize() = 0;
+    virtual uint16_t getMyOPCode() = 0;
+    virtual bguHeader* Builder(std::vector<std::string> lineParams) = 0;
+    virtual int getSize() = 0;
 
     virtual inline std::string toString()
     {

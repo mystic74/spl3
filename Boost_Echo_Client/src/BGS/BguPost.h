@@ -18,16 +18,18 @@ private:
 
 public:
 
-    bguPost()
+    bguPost() : content(),
+                reserved(0),
+                nameVector()
     {
 
     };
 
-    bguPost(std::vector<std::string> lineParams)
+    bguPost(std::vector<std::string> lineParams) : bguPost()
     {
 
         this->content = lineParams[1];
-        for (int nIndex = 2; nIndex < lineParams.size(); nIndex++)
+        for (unsigned int nIndex = 2; nIndex < lineParams.size(); nIndex++)
         {
             this->content +=  " " + lineParams[nIndex];
         }

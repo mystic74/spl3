@@ -22,7 +22,10 @@ public :
                    reserved2(0)
                  {};
                  
-    bguRegister(std::string username, std::string password)
+    bguRegister(std::string username, std::string password) : 	username(username),
+    															reserved1(0),
+    															password(password),
+    															reserved2(0)
     {
         this->username = username;
     	this->reserved1 = 0;  
