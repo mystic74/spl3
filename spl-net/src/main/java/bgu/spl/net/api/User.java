@@ -11,6 +11,8 @@ public class User {
 	private String password;
 	private ConcurrentLinkedQueue<bguProtocol> awaitingMessages;
 	
+	Object key = new Object();
+	
 	public User(String UserName, String Password)
 	{
 		this.numOfPosts=0;
@@ -21,9 +23,16 @@ public class User {
 		this.awaitingMessages = new ConcurrentLinkedQueue<>();
 	}
 	
-	public void addAwaitMessage(bguProtocol msg)
+	public boolean addAwaitMessage(bguProtocol msg)
 	{
-		this.awaitingMessages.offer(msg);
+		synchronized (key) {
+			if (!this.isLogin)
+			{
+					this.awaitingMessages.offer(msg);
+					return true;
+			}
+			return false;
+		}
 	}
 	
 	public ConcurrentLinkedQueue<bguProtocol> getAwaitsMessagesAndClear()
@@ -46,7 +55,9 @@ public class User {
 	
 	public void login()
 	{
-		this.isLogin=true;
+		synchronized (key) {
+			this.isLogin=true;	
+		}
 	}
 	
 	public void logout()

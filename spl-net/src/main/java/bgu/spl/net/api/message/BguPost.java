@@ -23,10 +23,12 @@ public class BguPost extends bguProtocol{
 	@Override
 	public byte[] encode() {
 		
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2 +
+											this.content.encode().length + 
+											1);
 		bf.putShort(opcode);
 		bf.put(this.content.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		return bf.array();
 	}
 
@@ -112,31 +114,7 @@ public class BguPost extends bguProtocol{
 			
 			usersToSendTo.offer(DataBase.getInstance().getUser(this.content.getMyString().substring(stringIndex, endingIndex)).getUserName());
 		}
-		
-		/*
-		//adds all the @<username> in the post
-		for (int i=0;i<this.content.length();i++)
-		{
-			if (this.content.charAt(i)=='@')
-			{
-				found = true;
-			}
-			else 
-				if (found= true)
-				{
-					if (this.content.charAt(i)==' ')
-					{
-						found= false;
-						usersToSendTo.offer(DataBase.getInstance().getUser(name));
-						name="";		
-					}
-					else
-					{
-						name=name+this.content.charAt(i);
-					}
-				}
-		}
-		*/
+	
 		return usersToSendTo;
 		
 	}
@@ -174,7 +152,12 @@ public class BguPost extends bguProtocol{
 		
 		for (User nonActoveUser: nonActiveClients)
 		{
-			nonActoveUser.addAwaitMessage(notification);
+			if (!nonActoveUser.addAwaitMessage(notification))
+			{
+				String[] list = { nonActoveUser.getUserName() };
+				currConnections.sendTo(list,notification);
+			}
+				
 		}
 
 		

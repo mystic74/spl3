@@ -31,7 +31,7 @@ public:
         
         for (unsigned int nIndex = 2; nIndex < lineParams.size(); nIndex++)
         {
-            this->content += lineParams[nIndex];
+            this->content += " " + lineParams[nIndex];
         }
     }
 

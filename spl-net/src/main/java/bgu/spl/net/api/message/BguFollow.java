@@ -42,7 +42,10 @@ public class BguFollow extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2 +
+											2 + 
+											1 + 
+											this.UsersNameList.toByteArray().length);
 		bf.putShort(this.opcode);
 		bf.put(Follow);
 		bf.putShort(this.numOfUsers.mShort);
@@ -115,10 +118,6 @@ public class BguFollow extends bguProtocol{
 
 	}
 
-
-
-
-
 	@Override
 	public bguProtocol isDone() {
 		if ((this.Follow != -1) && this.numOfUsers.isDone() && this.UsersNameList.isDone())
@@ -126,6 +125,11 @@ public class BguFollow extends bguProtocol{
 		return null;
 	}
 
+	@Override
+	public String toString() {
+		 return "FOLLOW " + Follow + " " + numOfUsers + " " + UsersNameList.toString();
+	}
 
 
+	
 }

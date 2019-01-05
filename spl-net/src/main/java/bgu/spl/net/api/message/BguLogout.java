@@ -19,7 +19,7 @@ public class BguLogout extends bguProtocol{
 
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2);
 		bf.putShort(opcode);
 		return bf.array();
 	}

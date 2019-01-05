@@ -25,12 +25,16 @@ public class BguRegister extends bguProtocol {
 	
 	@Override
 	public byte[] encode() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
+		ByteBuffer bf = ByteBuffer.allocate(2 +
+											this.username.encode().length + 
+											1 +
+											this.password.encode().length +
+											1);
 		bf.putShort(opcode);
 		bf.put(this.username.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		bf.put(this.password.encode());
-		bf.putChar('\0');
+		bf.put((byte) 0);
 		return bf.array();
 	}
 
