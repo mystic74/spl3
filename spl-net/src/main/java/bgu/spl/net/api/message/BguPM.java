@@ -65,7 +65,9 @@ public class BguPM extends bguProtocol{
 		
 		User userForClient = DataBase.getInstance().getUsersForClient(ClientID);
 
-		DataBase.getInstance().addPMmessage(userForClient.getUserName(), this.userName.getMyString() , this.content.getMyString());
+		if (!DataBase.getInstance().addPMmessage(userForClient.getUserName(), this.userName.getMyString() , this.content.getMyString()))
+			return new BguError((short)11, this.opcode);
+		
 		BguFieldString sender = new BguFieldString();
 		sender.setString(userForClient.getUserName());
 		bguNotification notification =new bguNotification((short)9, (byte)0, sender, this.content);
@@ -77,7 +79,7 @@ public class BguPM extends bguProtocol{
 			myConnections.sendTo(userToArray,notification);
 		}	
 	
-	return null;
+		return new BguACK((short) 10, this.opcode);
 	}
 
 	@Override

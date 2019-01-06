@@ -14,11 +14,12 @@ struct SbguErrorHeader
     uint16_t    m_MsgOpcode;
 };
 
-class bguError :public  bguHeader
+class bguError : public  bguHeader
 {
-    uint16_t    m_MsgOpcode;
 
 public:
+    uint16_t    m_MsgOpcode;
+
     bguError() : m_MsgOpcode(0)
     {
     };

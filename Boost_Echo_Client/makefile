@@ -1,6 +1,6 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
-BIN_NAME := hello
+BIN_NAME := BGSclient
 # Compiler used
 CXX ?= g++
 # Extension of source files used in the project
@@ -74,10 +74,10 @@ debug: export LDFLAGS := $(LDFLAGS) $(LINK_FLAGS) $(DLINK_FLAGS)
 
 # Build and output paths
 release: export BUILD_PATH := build/release
-release: export BIN_PATH := bin/release
+release: export BIN_PATH := bin/
 debug: export BUILD_PATH := build/debug
-debug: export BIN_PATH := bin/debug
-install: export BIN_PATH := bin/release
+debug: export BIN_PATH := bin/
+install: export BIN_PATH := bin/
 
 # Find all source files in the source directory, sorted by most
 # recently modified

@@ -68,9 +68,18 @@ public class DataBase {
 		return flag;
 	}
 	
-	public void addClientID(User user, int ClientID)
+	synchronized public boolean addClientID(User user, int ClientID)
 	{
+		if (ClientIdUsers.containsKey(ClientID))
+			return false;
+		
 		ClientIdUsers.put(ClientID, user);
+		return true;
+	}
+	
+	public void removeClientID(User user, int ClientID)
+	{
+		ClientIdUsers.remove(ClientID);
 	}
 	
 	
@@ -103,8 +112,14 @@ public class DataBase {
 		
 	}
 	
-	//adds a PM message to the PMmessages list.
-	//return false if the sender or the receiver doesn't exist
+	/***
+	 * adds a PM message to the PMmessages list.
+	 * return false if the sender or the receiver doesn't exist 
+	 * @param from User sending the message
+	 * @param to user receiving the message
+	 * @param message the message sent to the user
+	 * @return if the user (one sent too probably) was found.
+	 */
 	public boolean addPMmessage(String from, String to, String message)
 	{
 		boolean result=false;

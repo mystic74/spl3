@@ -146,7 +146,7 @@ public class BguPost extends bguProtocol{
 			}				
 		}
 		
-		return null;
+		return new BguACK((short) 10, this.opcode);
 	}
 
 	@Override

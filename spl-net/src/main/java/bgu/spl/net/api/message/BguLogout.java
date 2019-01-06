@@ -40,10 +40,10 @@ public class BguLogout extends bguProtocol{
 
 				
 			}
+	
 			userForClient.logout();
-
-		return new BguACK((short) 10, this.opcode);
-
+			DataBase.getInstance().removeClientID(userForClient, ClientID);
+			return new BguACK((short) 10, this.opcode);
 	}
 
 	@Override

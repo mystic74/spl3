@@ -84,7 +84,9 @@ public class User {
 	
 	public boolean isLogIN()
 	{
-		return this.isLogin;
+		synchronized (key) {
+			return this.isLogin;
+		}
 	}
 	
 	public void changePassword (String Password)

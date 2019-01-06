@@ -6,12 +6,15 @@
 #include "BGS/BguPost.h"
 #include "BGS/BguRegister.h"
 #include "BGS/BguAck.h"
+#include "BGS/BguError.h"
 #include "BguNotification.h"
 #include "BguMessageFactory.h"
 #include "BGS/BguAckMessages/BguAckFollow.h"
 #include "BGS/BguAckMessages/BguAckUserList.h"
 #include "BGS/BguAckMessages/BguAckStat.h"
 #include <thread>
+#include <unistd.h>
+
 /**
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
@@ -25,6 +28,7 @@ struct opcodeTras
 };
 
 static bool keepOnRunning = true;
+static bool sentLogout    = false;
 void getNewMessages(ConnectionHandler* ch)
 {
         char opcodeArr[2] = {};
@@ -61,6 +65,7 @@ void getNewMessages(ConnectionHandler* ch)
 
                     if (curResponse->decode(ackErrArr))
                     {
+                        // Check if ACKS
                         if (curResponse->getMyOPCode() == 10) {
 
                         	 // Ack Follow
@@ -103,6 +108,13 @@ void getNewMessages(ConnectionHandler* ch)
                             }
 
                         }
+                        else if (curResponse->getMyOPCode() == 11)
+                        {
+                            if (((bguError*)curResponse)->m_MsgOpcode == 4)
+                            {
+                                ::sentLogout = false;
+                            }
+                        }
                         
                     }
                 }
@@ -137,7 +149,18 @@ void getTextAndSend(ConnectionHandler* ch)
             break;
         }
 
+         if (tempHeader->getMyOPCode() == 3)
+         {
+            ::sentLogout = true;
+         }
         delete(tempHeader);
+
+        do
+        {
+            usleep(30);
+        }
+        while(::sentLogout && ::keepOnRunning);
+
     }
 }
 int main (int argc, char *argv[]) {
@@ -168,6 +191,8 @@ int main (int argc, char *argv[]) {
     for(auto& thread : threads){
         thread.join();
     }
+
+    connectionHandler.close();
 
     //From here we will see the rest of the ehco client implementation:
     

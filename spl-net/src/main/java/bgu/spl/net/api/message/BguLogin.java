@@ -65,7 +65,9 @@ public class BguLogin extends bguProtocol {
 			return new BguError((short)11, this.opcode);
 		}
 		
-		DataBase.getInstance().addClientID(user, ClientID);
+		if (!DataBase.getInstance().addClientID(user, ClientID))
+			return new BguError((short)11, this.opcode);
+		
 		user.login();
 		ConcurrentLinkedQueue<bguProtocol> msgQueue = user.getAwaitsMessagesAndClear();
 		
