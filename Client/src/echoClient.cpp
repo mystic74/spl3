@@ -29,6 +29,7 @@ struct opcodeTras
 
 static bool keepOnRunning = true;
 static bool sentLogout    = false;
+static bool loginSent     = false;
 void getNewMessages(ConnectionHandler* ch)
 {
         char opcodeArr[2] = {};
@@ -102,6 +103,10 @@ void getNewMessages(ConnectionHandler* ch)
                                 }
                                 while (!bgack->decode(readAck[0]));
                             }
+                            else if (((bguAck*)curResponse)->m_MsgOpcode == 2)
+                            {
+                                ::loginSent = true;
+                            }
                             else if (((bguAck*)curResponse)->m_MsgOpcode == 3)
                             {
                                 ::keepOnRunning = false;
@@ -119,7 +124,7 @@ void getNewMessages(ConnectionHandler* ch)
                     }
                 }
             }
-            std::cout << "\rCLIENT > "  << curResponse->toString() << std::endl;
+            std::cout << "CLIENT > "  << curResponse->toString() << std::endl;
 
             if (curResponse != nullptr) {
                delete(curResponse);
@@ -141,7 +146,7 @@ void getTextAndSend(ConnectionHandler* ch)
         char buf[1024]{};
         strcpy(buf,tempString.data()) ;
 
-        std::cout << "\rCLIENT < ";
+        std::cout << "CLIENT < ";
         std::cin.getline(buf, bufsize);
 		std::string line(buf);
 
@@ -153,7 +158,7 @@ void getTextAndSend(ConnectionHandler* ch)
             break;
         }
 
-         if (tempHeader->getMyOPCode() == 3)
+         if (tempHeader->getMyOPCode() == 3 && (::loginSent))
          {
             ::sentLogout = true;
          }

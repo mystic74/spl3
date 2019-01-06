@@ -19,12 +19,8 @@ BguMessageFactory *BguMessageFactory::_instance = 0;
 
 BguMessageFactory::~BguMessageFactory()
 {
-    if (_instance != 0)
-    {
-        delete(_instance);
-        _instance = 0;
-    }
 }
+
 /**
  * Returns the single instance of the object.
  */

@@ -1,2 +1,2 @@
 #/bin/bash
-tar -cvzf 205436033_203704911.tar.gz Client/include Client/src Client/makefile Server/src Server/pom.xml
+tar -cvzf 205436033_203704911.tar.gz Client/include Client/bin Client/src Client/makefile Server/src Server/pom.xml

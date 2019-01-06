@@ -23,7 +23,7 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
 
     // Inherited function, do we need this?
     // YES!
-    public void send(T msg) {
+    synchronized public void send(T msg) {
     	if (msg != null) {
     		byte[] debugArr = encdec.encode(msg);
             writeQueue.add(ByteBuffer.wrap(debugArr));

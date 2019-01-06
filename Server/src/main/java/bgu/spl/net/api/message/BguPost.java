@@ -73,7 +73,7 @@ public class BguPost extends bguProtocol{
 			
 			String substring = this.content.getMyString().substring(stringIndex + 1, endingIndex);
 			User usrFromString = DataBase.getInstance().getUser(substring);
-			if (usrFromString != null)
+			if ((usrFromString != null) && (!usersToSendTo.contains(usrFromString)))
 				usersToSendTo.offer(usrFromString);		
 		
 			stringIndex = this.content.getMyString().indexOf('@', stringIndex + 1);

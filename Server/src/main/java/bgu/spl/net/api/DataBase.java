@@ -15,6 +15,8 @@ public class DataBase {
 	private ConcurrentLinkedQueue<Post> posts;
 	private ConcurrentLinkedQueue<PMmessage> PMmessages;
 	private ConcurrentHashMap<Integer,User> ClientIdUsers;
+
+	Object key = new Object();
 	
 	private DataBase()
 	{
@@ -34,17 +36,18 @@ public class DataBase {
 	//return false if the user is already exist
 	public boolean register(String userName, String Password, int ClientID)
 	{
-		
-		for (User user : UsersList) {
-			if (user.getUserName().equals(userName))
-			{
-				return false;
-			}	
+		synchronized(key)
+		{
+			for (User user : UsersList) {
+				if (user.getUserName().equals(userName))
+				{
+					return false;
+				}	
+			}
+			
+			User user = new User(userName, Password);
+			this.UsersList.offer(user);
 		}
-		
-		User user = new User(userName, Password);
-		this.UsersList.offer(user);
-
 
 
 		return true;
@@ -55,16 +58,19 @@ public class DataBase {
 	public boolean unRegister(User userName, int ClientID)
 	{
 		boolean flag=false;
-		for (User user : UsersList) {
-			if (user.getUserName().equals(userName.getUserName()))
-			{
-				flag =  this.UsersList.remove(user);
+
+		synchronized (key)
+		{
+			for (User user : UsersList) {
+				if (user.getUserName().equals(userName.getUserName()))
+				{
+					flag =  this.UsersList.remove(user);
+					
+				}
 				
 			}
-			
+			ClientIdUsers.remove(ClientID);
 		}
-		ClientIdUsers.remove(ClientID);
-
 		return flag;
 	}
 	
