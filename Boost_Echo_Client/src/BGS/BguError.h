@@ -28,7 +28,7 @@ public:
     {
         int size = sizeof(bguProtocolStruct) + 2;
 
-        std::cout << "Should not get here" << std::endl;
+        std::cout << "Should not send bguError get here" << std::endl;
         return size;
     }
 

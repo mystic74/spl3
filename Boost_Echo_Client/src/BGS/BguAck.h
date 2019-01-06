@@ -23,7 +23,7 @@ public:
         {
             int size = sizeof(bguProtocolStruct) + 2;
 
-            std::cout << "Should not get here" << std::endl;
+            std::cout << "Should not send bgu ack" << std::endl;
             return size;
         }
     virtual bool Serialize(int8_t* out_buff)

@@ -127,6 +127,10 @@ void getNewMessages(ConnectionHandler* ch)
             }
 
         }
+
+        BguMessageFactory*  bf = BguMessageFactory::getInstance();
+        
+        delete(bf);
 }
 
 void getTextAndSend(ConnectionHandler* ch)

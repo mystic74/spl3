@@ -46,7 +46,6 @@ typedef struct{
             size += (name.size() + 1);
         }
 
-        std::cout << size << std::endl;
         return size;
     }
     

@@ -45,10 +45,6 @@ private:
 inline BguMessageFactory::BguMessageFactory() {
 }
 
-// Destructor implementation
-inline BguMessageFactory::~BguMessageFactory() {
-}
-
 // TODO: Uncomment the copy constructor when you need it.
 //inline BguMessageFactory::BguMessageFactory(const BguMessageFactory& src)
 //{

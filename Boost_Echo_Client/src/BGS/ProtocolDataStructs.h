@@ -74,7 +74,7 @@ public:
 
     virtual inline bool decode(char nextByte[2]) 
     {
-        std::cout <<  "bguProtocol::decode -> Shouldn't get here! \n" << std::endl;
+        std::cout <<  "bguProtocol::decode -> Shouldn't get here, this function is just for inheritance \n" << std::endl;
         return true;
     }
 

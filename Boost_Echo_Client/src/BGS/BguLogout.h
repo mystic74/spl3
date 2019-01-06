@@ -11,7 +11,6 @@ public:
         {
             int size = sizeof(bguProtocolStruct);
 
-            std::cout << size << std::endl;
             return size;
         }
         virtual inline uint16_t getMyOPCode()

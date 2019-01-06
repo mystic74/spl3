@@ -37,7 +37,6 @@ public :
     {
         int size = strlen(this->username.data()) + strlen(this->password.data()) + 2*SIZE_FOR_RESERVED + sizeof(bguProtocolStruct);
 
-        std::cout << size << std::endl;
         return size;
     }
 
