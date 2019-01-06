@@ -7,16 +7,18 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.Socket;
 
+import bgu.spl.net.impl.BGUEncoderDecoder;
+
 public class RCIClient implements Closeable {
 
-    private final ObjectEncoderDecoder encdec;
+    private final BGUEncoderDecoder encdec;
     private final Socket sock;
     private final BufferedInputStream in;
     private final BufferedOutputStream out;
 
     public RCIClient(String host, int port) throws IOException {
         sock = new Socket(host, port);
-        encdec = new ObjectEncoderDecoder();
+        encdec = new BGUEncoderDecoder();
         in = new BufferedInputStream(sock.getInputStream());
         out = new BufferedOutputStream(sock.getOutputStream());
     }

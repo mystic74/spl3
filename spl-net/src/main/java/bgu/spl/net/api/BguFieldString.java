@@ -1,7 +1,7 @@
 package bgu.spl.net.api;
 
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class BguFieldString extends bguField {
@@ -14,6 +14,13 @@ public class BguFieldString extends bguField {
 
 	public void setString(String username) {
 		this.myString = username;
+		out = new ByteArrayOutputStream();
+		try {
+			out.write(username.getBytes(StandardCharsets.UTF_8));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public String decode(byte nextByte )
@@ -21,8 +28,6 @@ public class BguFieldString extends bguField {
 		if (nextByte == 0)
 		{
 			this.isDone = true;
-			System.out.println("The string is " + new String(out.toByteArray(), StandardCharsets.UTF_8));
-			//return myString;
 	        return new String(out.toByteArray(), StandardCharsets.UTF_8);
 
 		}

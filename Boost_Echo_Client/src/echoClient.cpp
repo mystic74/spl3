@@ -29,7 +29,7 @@ void getNewMessages(ConnectionHandler* ch)
 {
         char opcodeArr[2] = {};
         bguHeader* curResponse = nullptr;
-        while (keepOnRunning)
+        while (::keepOnRunning)
         {
             // Trying to get the response opcode
             if (!ch->getBytes(opcodeArr,2)){
@@ -76,7 +76,6 @@ void getNewMessages(ConnectionHandler* ch)
                                 while (!bgack->decode(readAck[0])); 
                             }
                         	else if (((bguAck*)curResponse)->m_MsgOpcode == 7) {
-                        		std::cout << " GOT AckUserList" << std::endl;
                         		bguAck* tempCast = ((bguAck*) curResponse);
                         		bguAckUserList* bgack = new bguAckUserList((*tempCast));
 								delete(curResponse);
@@ -88,7 +87,6 @@ void getNewMessages(ConnectionHandler* ch)
 								while (!bgack->decode(readAck[0]));
                         	}
                             else if (((bguAck*)curResponse)->m_MsgOpcode == 8) {
-                                std::cout << " GOT AckStat" << std::endl;
                                 bguAck* tempCast = ((bguAck*) curResponse);
                                 bguAckStat* bgack = new bguAckStat((*tempCast));
                                 delete(curResponse);
@@ -101,7 +99,7 @@ void getNewMessages(ConnectionHandler* ch)
                             }
                             else if (((bguAck*)curResponse)->m_MsgOpcode == 3)
                             {
-                                std::cout << " GOT Ack for logout" << std::endl;
+                                ::keepOnRunning = false;
                             }
 
                         }
@@ -109,7 +107,8 @@ void getNewMessages(ConnectionHandler* ch)
                     }
                 }
             }
-            std::cout << "CLIENT > "  << curResponse->toString() << std::endl;
+            std::cout << "\rCLIENT > "  << curResponse->toString() << std::endl;
+
             if (curResponse != nullptr) {
                delete(curResponse);
                curResponse = nullptr;
@@ -120,16 +119,15 @@ void getNewMessages(ConnectionHandler* ch)
 
 void getTextAndSend(ConnectionHandler* ch)
 {
-    while (1) {
+    while (::keepOnRunning) {
         const short bufsize = 1024;
         std::string tempString(1024, '~');
         char buf[1024]{};
         strcpy(buf,tempString.data()) ;
 
-        std::cout << "CLIENT <";
+        std::cout << "\rCLIENT < ";
         std::cin.getline(buf, bufsize);
 		std::string line(buf);
-		int len=1024;
 
         bguHeader* tempHeader = BguMessageFactory::getInstance()->generateMessage(line);
         //tempHeader.Serialize((int8_t*)buf);
@@ -138,11 +136,8 @@ void getTextAndSend(ConnectionHandler* ch)
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-		// connectionHandler.sendLine(line) appends '\n' to the message. Therefor we send len+1 bytes.
-        std::cout << "Sent " << len+1 << " bytes to server" << std::endl;
 
         delete(tempHeader);
-
     }
 }
 int main (int argc, char *argv[]) {
@@ -154,10 +149,7 @@ int main (int argc, char *argv[]) {
     }
 
     std::vector<std::thread> threads;
-
    
-
-    std::cout << "foo and bar completed.\n";
     std::string host = argv[1];
     short port = atoi(argv[2]);
     
@@ -167,14 +159,10 @@ int main (int argc, char *argv[]) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
     }
-	
-
     
     
     threads.push_back(std::thread(getNewMessages, &connectionHandler));
     threads.push_back(std::thread(getTextAndSend, &connectionHandler));
-
-    std::cout << "main, foo and bar now execute concurrently...\n";
 
     // synchronize threads:
     for(auto& thread : threads){

@@ -13,10 +13,7 @@ public class bguMessageFactory {
 	
 	
 	public bguProtocol getMessage(short Opcode)
-	{
-		
-		System.out.println("The opcode is" + Opcode + "\n");
-		
+	{	
 		switch(Opcode){
 		case 1:
 			return new BguRegister(Opcode);

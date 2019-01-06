@@ -62,7 +62,9 @@ public class User {
 	
 	public void logout()
 	{
-		this.isLogin= false;
+		synchronized (key) {
+			this.isLogin= false;
+		}
 	}
 	
 	public void addPost()

@@ -36,6 +36,7 @@ public class BguUserList extends bguProtocol{
 		User user = DataBase.getInstance().getUsersForClient(ClientID);
 			if (user == null)
 				return null;
+			
 			if (!user.isLogIN())
 			{
 				return new BguError((short)11, this.opcode);
@@ -47,6 +48,7 @@ public class BguUserList extends bguProtocol{
 			{
 				tempUsersString= tempUsersString+users.getUserName()+'\0';
 			}
+			
 			allUsers.setString(tempUsersString);
 			bguFieldShort numOfUsers = new bguFieldShort((short)DataBase.getInstance().getAllUsers().size());
 

@@ -2,8 +2,6 @@ package bgu.spl.net.api.message;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import bgu.spl.net.api.DataBase;
 import bgu.spl.net.api.User;
 import bgu.spl.net.api.bguProtocol;

@@ -82,7 +82,7 @@ public:
     {
         std::string rstring = "ACK " + std::to_string(this->m_MsgOpcode);
 
-        rstring += " " + std::to_string(this->m_numOfUsers);
+        rstring += " " + std::to_string(this->m_numOfUsers) + " ";
 
         for (unsigned int index = 0; index < this->m_nameVector.size(); index++)
         {

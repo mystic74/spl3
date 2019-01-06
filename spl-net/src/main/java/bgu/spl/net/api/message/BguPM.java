@@ -55,11 +55,14 @@ public class BguPM extends bguProtocol{
 
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> myConnections) {
+		
 		User usrToSendTo  = DataBase.getInstance().getUser(this.userName.getMyString());
+		
 		if (usrToSendTo == null)
 		{
 			return new BguError((short)11, this.opcode);
 		}
+		
 		User userForClient = DataBase.getInstance().getUsersForClient(ClientID);
 
 		DataBase.getInstance().addPMmessage(userForClient.getUserName(), this.userName.getMyString() , this.content.getMyString());
@@ -67,19 +70,12 @@ public class BguPM extends bguProtocol{
 		sender.setString(userForClient.getUserName());
 		bguNotification notification =new bguNotification((short)9, (byte)0, sender, this.content);
 		
-		if (!usrToSendTo.isLogIN())
-		{	
-			usrToSendTo.addAwaitMessage(notification);
-		}
 		
-		else
+		if (!usrToSendTo.addAwaitMessage(notification))
 		{
-			// TODO TomR : Null check, crashes with contains on NullPointerException
 			String [] userToArray = {usrToSendTo.getUserName()};
 			myConnections.sendTo(userToArray,notification);
-
-		}
-		
+		}	
 	
 	return null;
 	}

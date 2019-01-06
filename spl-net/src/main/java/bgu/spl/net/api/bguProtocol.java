@@ -2,7 +2,6 @@ package bgu.spl.net.api;
 
 import java.io.Serializable;
 
-import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.api.bidi.ConnectionsImpl;
 
 @SuppressWarnings("serial")

@@ -83,6 +83,7 @@ public class BguPost extends bguProtocol{
 		return usersToSendTo;
 	}
 	
+	@SuppressWarnings("unused")
 	private ConcurrentLinkedQueue<String> usersToSendTo(int ClientID)
 	{
 		ConcurrentLinkedQueue<String> usersToSendTo = new ConcurrentLinkedQueue<>();
@@ -122,45 +123,28 @@ public class BguPost extends bguProtocol{
 	@Override
 	public Serializable act(int ClientID, ConnectionsImpl<bguProtocol> currConnections) {
 		
-		
-		
-		ConcurrentLinkedQueue<String> activeClients = new ConcurrentLinkedQueue<>();
-		ConcurrentLinkedQueue<User> nonActiveClients = new ConcurrentLinkedQueue<>();
-		
 		ConcurrentLinkedQueue<User> usersToSend = this.UsersToSend(ClientID);
+		
 		if(usersToSend == null)
 			return null;
 		
-		for (User userToSend: usersToSend)
-		{
-			if (userToSend.isLogIN())
-				activeClients.offer(userToSend.getUserName());
-			else			
-				nonActiveClients.offer(userToSend);
-			
-		}
-		
 		User user = DataBase.getInstance().getUsersForClient(ClientID);
+		if (user == null)
+			return null;
+		
 		DataBase.getInstance().addPost(this.content.getMyString(), user.getUserName());
 		BguFieldString userField = new BguFieldString();
 		userField.setString(user.getUserName());
-		bguNotification notification = new bguNotification((short)9, (byte)1,userField , this.content);
+		bguNotification notification = new bguNotification((short)9, (byte)1, userField, this.content);
 		
-		if (!activeClients.isEmpty())
-			currConnections.sendTo(activeClients.toArray(new String[1]),notification);
-		
-		
-		for (User nonActoveUser: nonActiveClients)
+		for (User sendToUser: usersToSend)
 		{
-			if (!nonActoveUser.addAwaitMessage(notification))
+			if (!sendToUser.addAwaitMessage(notification))
 			{
-				String[] list = { nonActoveUser.getUserName() };
-				currConnections.sendTo(list,notification);
-			}
-				
+				String[] list = { sendToUser.getUserName() };
+				currConnections.sendTo(list, notification);
+			}				
 		}
-
-		
 		
 		return null;
 	}

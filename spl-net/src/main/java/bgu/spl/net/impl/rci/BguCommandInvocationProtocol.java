@@ -4,16 +4,16 @@ import bgu.spl.net.api.bguProtocol;
 import bgu.spl.net.api.bidi.BidiMessagingProtocol;
 import bgu.spl.net.api.bidi.Connections;
 import bgu.spl.net.api.bidi.ConnectionsImpl;
-import bgu.spl.net.impl.newsfeed.NewsFeed;
+import bgu.spl.net.impl.MsgFeed;
 
 import java.io.Serializable;
 
-public class RemoteCommandInvocationProtocol<T> implements BidiMessagingProtocol<Serializable> {
+public class BguCommandInvocationProtocol<T> implements BidiMessagingProtocol<Serializable> {
 	
 	private int  ClientID;
 	private Connections<T> connectionInstance;
 	
-	public RemoteCommandInvocationProtocol(NewsFeed feed) {
+	public BguCommandInvocationProtocol(MsgFeed feed) {
 	}
 
 

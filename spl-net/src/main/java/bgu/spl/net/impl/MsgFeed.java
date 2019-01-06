@@ -1,10 +1,10 @@
-package bgu.spl.net.impl.newsfeed;
+package bgu.spl.net.impl;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class NewsFeed {
+public class MsgFeed {
 
     private ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> channels = new ConcurrentHashMap<>();
 
